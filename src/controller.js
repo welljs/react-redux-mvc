@@ -15,7 +15,7 @@ export default class Controller {
         this.checkSettings();
         this.storeKey = this.constructor.storeKey;
         this.actions = this.constructor.actions;
-        this.propTypes = this.constructor.propTypes
+        this.propTypes = this.constructor.propTypes;
     }
 
     /**

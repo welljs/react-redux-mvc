@@ -20,6 +20,37 @@ class Model {
         return this;
     }
 
+    resetWaiting (prop) {
+        this.set('waiting.' + prop, false);
+        return this;
+    }
+
+    setFailed (prop) {
+        this.set('waiting.' + prop, true);
+        return this;
+    }
+
+    resetFailed (prop) {
+        this.set('waiting.' + prop, false);
+        return this;
+    }
+
+    isWaiting (key) {
+        return this.state.waiting[key];
+    }
+
+    isFailed (key) {
+        return this.state.failed[key];
+    }
+
+    getWaiting () {
+        return this.state.waiting;
+    }
+
+    getFailed () {
+        return this.state.failed;
+    }
+
     /**
      * устанавливает значение prop в value
      * @param {String|Object} prop
@@ -37,30 +68,11 @@ class Model {
                 }
             });
         }
-        else if (typeof prop === 'string' && value) {
+        else if (typeof prop === 'string' && value !== undefined) {
             //позволяет устанавливать значения для вложенных ключей. Нармер set('user.name','Ivan')
             _set(this.state, prop, value);
         }
-    }
-
-    setFail (prop) {
-
-    }
-
-    isWaiting (key) {
-        return this.state.waiting[key];
-    }
-
-    isFail (key) {
-        return this.state.failed[key];
-    }
-
-    getWaiting () {
-        return this.state.waiting;
-    }
-
-    getFailed () {
-        return this.state.failed;
+        return this;
     }
 
     constructor (props) {
