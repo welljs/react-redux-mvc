@@ -26,12 +26,12 @@ class Model {
     }
 
     setFailed (prop) {
-        this.set('waiting.' + prop, true);
+        this.set('failed.' + prop, true);
         return this;
     }
 
     resetFailed (prop) {
-        this.set('waiting.' + prop, false);
+        this.set('failed.' + prop, false);
         return this;
     }
 
