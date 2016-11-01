@@ -91,12 +91,12 @@ class Model {
     }
 
     updateState (updates) {
-        this.state = cloneDeep(merge(this.state, updates));
+        this.state = merge(cloneDeep(this.state), updates);
         return this;
     }
 
     static newState (oldState, updates) {
-        return cloneDeep(merge(oldState, updates));
+        return merge(cloneDeep(oldState), updates);
     }
 
 }
