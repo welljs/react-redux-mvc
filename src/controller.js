@@ -55,6 +55,9 @@ export default class Controller {
      */
     action (...args) {
         const [name, ...restArguments] = args;
+        if (typeof name === 'function') {
+            return this.dispatch(name.apply(undefined, restArguments));
+        }
         const action = this.actions[name];
         if (typeof action !== 'function') {
             throw Error('Action must be a function');
