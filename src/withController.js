@@ -29,14 +29,17 @@ export function withController (Controller = BasicController) {
                 controller.onInit().then(() => this.setState({canRender: true}));
             }
 
-            componentWillUnmount () {
-                //почистить все дерьмо
-            }
-
             render () {
                 const {canRender} = this.state;
                 return canRender ? createElement(Component, {...this.props}) : null;
             }
+        }
+        if (typeof Controller.prototype.componentWillReceiveProps === 'function' ) {
+            const fn = Component.prototype.componentWillReceiveProps;
+            Component.prototype.componentWillReceiveProps = function (nextPops) {
+                Controller.prototype.componentWillReceiveProps(this.props, nextPops);
+                fn.call(this, nextPops);
+            };
         }
         return hoistStatics(Wrapper, Component);
     };
