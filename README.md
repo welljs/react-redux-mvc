@@ -6,6 +6,30 @@ Getting from npm
 
 ![alt tag](https://github.com/welljs/react-redux-mvc/blob/master/mvc-scheme.png)
 
+
+Exapmle:
+
+```javascript 
+import React, {Component, PropTypes} from 'react';
+import {withController} from 'react-redux-mvc';
+import LoginFormController from './controller';
+import {userShape} from './model';
+
+@withController(LoginFormController)
+export default class ProfileForm extends Component {
+	render () {
+		const {name: {first, last}, department, email, phone} = this.props;
+		<form onSubmit={this.controller.submit}>\
+			<input type="text" value={first} onChange={e => this.controller.onInputChange(e, 'name.first')}>
+			<input type="text" value={phone} onChange={e => this.controller.onInputChange(e, 'phone')}>
+			<input type="text" value={department} onChange={e => this.controller.onInputChange(e, 'department')}>
+		</form>
+	}
+}
+
+```
+
+
 Documentation wiki
 -------
 
