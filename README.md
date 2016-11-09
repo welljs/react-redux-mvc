@@ -25,15 +25,17 @@ Implementation of MVC pattrern based on React-Redux bunch
 import {Model as BasicModel} from 'react-redux-mvc';
 
 export initialState = Object.assign({}, {
-	error: null,
-	name: {
-		first: '',
-		last: ''
+	userData: {
+		name: {
+			first: '',
+			last: ''
+		},
+		age: null,
+		department: '',
+		email: '',
+		phone: ''
 	},
-	age: null,
-	department: '',
-	email: '',
-	phone: ''
+	errorMsg: null
 });
 
 export default class UserModel extends BasicModel {
@@ -48,18 +50,18 @@ export default class UserModel extends BasicModel {
 			.getState();
 	}
 	
-	onLoadFailed (error) {
+	onLoadFailed (errorMsg) {
 		return this
 			.setWaiting('loadUserData')
 			.resetFailed('loadUserData')
-			.updateState({error})
+			.updateState({errorMsg})
 			.getState();
 	}
 	
 	onLoadComplete (result) {
 		return this
 			.resetWaiting('loadUserData')
-			.updateState({data: result})
+			.updateState({userData: result})
 			.getState();
 	}
 }
