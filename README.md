@@ -169,25 +169,33 @@ console.log(lastName); // Brown
 Соответственно все операции осуществляются в рамках этих объектов
 
 **setWaiting(actionName:String)**
+
 Устанавливает состояние `actionName` как ожидающее (`true`)
 
 **resetWaiting(actionName:String)**
+
 Сбрасывает состояние `actionName` как ожидающее (`false`)
 
 **setFailed(actionName:String)**
+
 Устанавливает состояние `actionName` как с ошибкой (`true`) 
 
 **resetFailed(actionName:String)**
+
 Устанавливает состояние `actionName` как с ошибкой (`false`)
 
 **isWaiting(actionName:String)**
+
 Проверяет находится ли действие `actionName` в статусе ожидания
 
 **isFailed(actionName:String)**
+
 Проверяет находится ли действие `actionName` в статусе ошибки
 
 **getWaiting()**
+
 Возвращает весь объект с состояниями ожидания
 
 **getFailed()**
+
 Возвращает весь объект с состояниями ошибки
