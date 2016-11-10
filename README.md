@@ -4,6 +4,9 @@ Implementation of MVC pattrern based on React-Redux bunch keeping one direction 
 Getting from npm 
 `npm i react-redux-mvc -S`
 
+
+Build example `with npm run example`
+
 ![alt tag](https://github.com/welljs/react-redux-mvc/blob/master/mvc-scheme.png)
 
 
