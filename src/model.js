@@ -1,3 +1,4 @@
+import {PropTypes} from 'react';
 import _get from 'lodash/get';
 import _set from 'lodash/set';
 import _isPlainObject from 'lodash/isPlainObject';
@@ -10,45 +11,60 @@ function prepare (obj) {
 
 class Model {
     state = {
-        data: {},
-        waiting: {},
-        failed: {}
+        __waiting: {},
+        __failed: {}
     };
 
+    constructor (props) {
+        if (props) {
+            this.set(prepare(props));
+        }
+        this._createShape();
+    }
+
     setWaiting (prop) {
-        this.set('waiting.' + prop, true);
+        this.set('__waiting.' + prop, true);
         return this;
     }
 
     resetWaiting (prop) {
-        this.set('waiting.' + prop, false);
+        this.set('__waiting.' + prop, false);
         return this;
     }
 
     setFailed (prop) {
-        this.set('failed.' + prop, true);
+        this.set('__failed.' + prop, true);
         return this;
     }
 
     resetFailed (prop) {
-        this.set('failed.' + prop, false);
+        this.set('__failed.' + prop, false);
         return this;
     }
 
     isWaiting (key) {
-        return this.state.waiting[key];
+        return !!this.getState('__waiting.' + key);
     }
 
     isFailed (key) {
-        return this.state.failed[key];
+        return !!this.getState('__failed.' + key);
     }
 
     getWaiting () {
-        return this.state.waiting;
+        return this.getState('__waiting');
     }
 
     getFailed () {
-        return this.state.failed;
+        return this.getState('__failed');
+    }
+
+    _createShape () {
+        const {object} = PropTypes;
+        this.constructor.shape = Object.assign({
+            ...(this.constructor.shape || {}),
+            __waiting: object.isRequired,
+            __failed: object.isRequired
+        });
     }
 
     /**
@@ -62,11 +78,7 @@ class Model {
         }
         //устанавливает значения для целого объекта
         if (_isPlainObject(prop)) {
-            Object.entries(prop).forEach(([key, value]) => {
-                if (value) {
-                    this.state[key] = value;
-                }
-            });
+            this.state = merge(cloneDeep(this.state), prop);
         }
         else if (typeof prop === 'string' && value !== undefined) {
             //позволяет устанавливать значения для вложенных ключей. Нармер set('user.name','Ivan')
@@ -75,14 +87,8 @@ class Model {
         return this;
     }
 
-    constructor (props) {
-        if (props) {
-            this.state = prepare(props);
-        }
-    }
-
-    update(data) {
-        this.state = prepare(data);
+    update(updates) {
+        this.set(updates);
         return this;
     }
 
@@ -90,15 +96,10 @@ class Model {
         return prop ? _get(this.state, prop) : this.state;
     }
 
-    updateState (updates) {
-        this.state = merge(cloneDeep(this.state), updates);
+    reset (newState) {
+        _set(this.state, newState);
         return this;
     }
-
-    static newState (oldState, updates) {
-        return merge(cloneDeep(oldState), updates);
-    }
-
 }
 
 export default Model;

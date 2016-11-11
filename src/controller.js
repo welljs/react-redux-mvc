@@ -1,10 +1,16 @@
 import {PropTypes} from 'react';
 import _get from 'lodash/get';
 
+function noModelWarning (controllerName) {
+    throw new Error(`There is Model provided to ${controllerName}`);
+}
+
 //Базовый контроллер
 export default class Controller {
     storeKey = null;
+    //propsType bind to connected component
     static propsTypes = {};
+
     //список полей, которые надо получить из стора.
     // чтобы получить вложенные, надо указать их через точку: routing.location
     static connectedState = [];
@@ -24,10 +30,6 @@ export default class Controller {
     checkSettings () {
         if (!this.constructor.storeKey) {
             throw new Error(`Store key in ${this.name} must be defined`);
-        }
-
-        if (!this.Model) {
-            throw new Error(`Model proto in ${this.name} must be passed to BasicController defined`);
         }
     }
 
@@ -78,15 +80,40 @@ export default class Controller {
      * @returns {undefined}
      */
     getState (prop) {
-        return typeof prop === 'string' ? _get(this.getGlobalState(), prop) : undefined;
+        return prop ? _get(this.getGlobalState()[this.storeKey], prop) : this.getGlobalState()[this.storeKey];
     };
 
     /**
-     * возвращает ожидющие ключи
-     * @param key
+     * возвращает ожидающие
+     * @returns {*}
      */
-    getWaiting (key) {
-        return new this.Model(this.getState()).getWaiting();
+    getWaiting () {
+        if (this.Model) {
+            return new this.Model(this.getState()).getWaiting();
+        }
+        else {
+            noModelWarning(this.name);
+        }
+    }
+
+
+    isWaiting (prop) {
+        if (this.Model) {
+            return !!new this.Model(this.getState()).isWaiting(prop)
+        }
+        else {
+            noModelWarning(this.name);
+        }
+
+    }
+
+    isFailed (prop) {
+        if (this.Model) {
+            return !!new this.Model(this.getState()).isFailed(prop)
+        }
+        else {
+            noModelWarning(this.name);
+        }
     }
 
     /**
@@ -94,7 +121,13 @@ export default class Controller {
      * @returns {*}
      */
     getFailed () {
-        return this.model.update(this.getState()).getFailed();
+        if (this.Model) {
+            return new this.Model(this.getState()).getFailed();
+        }
+        else {
+            noModelWarning(this.name);
+        }
+
     }
 }
 
