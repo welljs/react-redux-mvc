@@ -27,6 +27,4 @@ export default class ProfileController extends Controller {
     };
 
     isSubmitWaiting = () => this.isWaiting(ASYNC_ACTION_SUBMIT_PROFILE);
-
-    isSubmitFailed = () => this.isFailed(ASYNC_ACTION_SUBMIT_PROFILE);
 }
