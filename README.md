@@ -1,11 +1,6 @@
 # react-redux-mvc
 Implementation of MVC pattrern based on React-Redux bunch keeping one direction data flow (flux pattern)
 
-Getting from npm 
-`npm i react-redux-mvc -S`
-
-
-Build example with `npm run example`
 
 ![alt tag](https://github.com/welljs/react-redux-mvc/blob/master/mvc-scheme.png)
 
@@ -31,6 +26,17 @@ export default class ProfileForm extends Component {
 }
 
 ```
+
+Installation
+------------
+
+`npm i react-redux-mvc -S`
+
+
+Example
+------
+
+Для того, чтобы посмотреть рабочий пример, нужно собрать его командой `npm run example` из корневой директории проекта, затем открыть файл `./example/index.html` Пример работает локально, без веб-сервера
 
 
 Documentation wiki
