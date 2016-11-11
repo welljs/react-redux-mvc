@@ -49,3 +49,4 @@ Documentation wiki
 [View](https://github.com/welljs/react-redux-mvc/wiki/View)
 
 [Controller](https://github.com/welljs/react-redux-mvc/wiki/Controller)
+
