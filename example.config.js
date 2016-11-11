@@ -1,8 +1,8 @@
 const webpack = require('webpack');
 const path = require('path');
 
-//Execute npm run build, and reset this flag to false to use production version
-const useSources = true;
+//Execute npm run build, and set this flag to true to use source version
+const useSources = false;
 
 const resolve = {
     root: path.resolve(__dirname),
