@@ -39,6 +39,137 @@ export default class ProfileForm extends Component {
 }
 ```
 
+ProfileController.js
+```javascript
+import {PropTypes} from 'react';
+import {Controller} from 'react-redux-mvc';
+import {STORE_KEY, ACTION_UPDATE_PROFILE, ASYNC_ACTION_SUBMIT_PROFILE} from './common';
+import actions from './actions';
+import UserModel from './UserModel';
+
+export default class ProfileController extends Controller {
+  static storeKey = STORE_KEY;
+  static actions = actions;
+  static propTypes = UserModel.shape;
+  static connectedState = [STORE_KEY];
+
+  constructor () {
+      super(UserModel);
+  }
+
+  updateUserData = (prop, value) => {
+      this.updateProp('userData', {[prop]: value});
+  };
+
+  updateProp = (prop, value) => {
+      this.action(ACTION_UPDATE_PROFILE, {[prop]: value});
+  };
+
+  submit = (userData) => {
+      this.action(ASYNC_ACTION_SUBMIT_PROFILE, userData);
+  };
+
+  isSubmitWaiting = () => this.isWaiting(ASYNC_ACTION_SUBMIT_PROFILE);
+}
+```
+
+UserModel.js
+
+```javascript
+import {PropTypes} from 'react';
+import {Model} from 'react-redux-mvc';
+import {ASYNC_ACTION_SUBMIT_PROFILE} from './common';
+
+const {number, string, bool} = PropTypes;
+
+export default class UserModel extends Model {
+  static shape = {
+    userData: PropTypes.shape({
+      firstName: string,
+      lastName: string,
+      age: number,
+      phone: string,
+      email: string.isRequired,
+      department: string
+    }),
+    errorMsg: string,
+    isSaved: bool
+  };
+  static defaults = {
+    userData: {
+      firstName: '',
+      lastName: '',
+      age: null,
+      department: '',
+      email: '',
+      phone: ''
+    },
+    errorMsg: null,
+    isSaved: false
+  };
+  constructor(state){
+    super(state);
+  }
+
+  onUpdate (updates) {
+    return this.update(updates).getState();
+  }
+
+  onSubmitWaiting () {
+    return this
+      .update({isSaved: false})
+      .setWaiting(ASYNC_ACTION_SUBMIT_PROFILE)
+      .resetFailed(ASYNC_ACTION_SUBMIT_PROFILE)
+      .getState();
+  }
+
+  onSubmitFailed (errorMsg) {
+    return this
+        .update({errorMsg})
+        .setWaiting(ASYNC_ACTION_SUBMIT_PROFILE)
+        .resetFailed(ASYNC_ACTION_SUBMIT_PROFILE)
+        .getState();
+  }
+
+  onSubmitComplete (updates) {
+    return this
+      .update({userData: updates, isSaved: true })
+      .resetWaiting(ASYNC_ACTION_SUBMIT_PROFILE)
+      .getState();
+  }
+}
+```
+
+actions.js
+```javascript
+import {createAction} from 'easy-redux';
+import {STORE_KEY, ACTION_UPDATE_PROFILE, ASYNC_ACTION_SUBMIT_PROFILE} from './common';
+import UserModel from './UserModel';
+
+const initialState = Object.assign({}, UserModel.defaults);
+export default {
+  [ASYNC_ACTION_SUBMIT_PROFILE]: createAction(ASYNC_ACTION_SUBMIT_PROFILE, {
+    async: true,
+    storeKey: STORE_KEY,
+    initialState,
+    action: (userData) => ({
+      promise: asyncExec => asyncExec(userData)
+    }),
+    handlers: {
+      onWait: state => new UserModel(state).onSubmitWaiting(),
+      onFail: (state, {error}) => new UserModel(state).onSubmitFailed(error),
+      onSuccess: (state, {result}) => new UserModel(state).onSubmitComplete(result)
+    }
+  }),
+  [ACTION_UPDATE_PROFILE]: createAction(ACTION_UPDATE_PROFILE, {
+    storeKey: STORE_KEY,
+    initialState,
+    action: (updates) => ({updates}),
+    handler: (state, {updates}) => new UserModel(state).onUpdate(updates)
+  })
+};
+```
+
 Installation
 ------------
 
