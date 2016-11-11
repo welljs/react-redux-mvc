@@ -54,22 +54,24 @@ export default class ProfileController extends Controller {
   static connectedState = [STORE_KEY];
 
   constructor () {
-      super(UserModel);
+    super(UserModel);
   }
 
   updateUserData = (prop, value) => {
-      this.updateProp('userData', {[prop]: value});
+    this.updateProp('userData', {[prop]: value});
   };
 
   updateProp = (prop, value) => {
-      this.action(ACTION_UPDATE_PROFILE, {[prop]: value});
+    this.action(ACTION_UPDATE_PROFILE, {[prop]: value});
   };
 
   submit = (userData) => {
-      this.action(ASYNC_ACTION_SUBMIT_PROFILE, userData);
+    this.action(ASYNC_ACTION_SUBMIT_PROFILE, userData);
   };
 
-  isSubmitWaiting = () => this.isWaiting(ASYNC_ACTION_SUBMIT_PROFILE);
+  isSubmitWaiting = () => {
+    this.isWaiting(ASYNC_ACTION_SUBMIT_PROFILE)
+  };
 }
 ```
 
