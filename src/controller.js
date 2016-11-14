@@ -135,3 +135,4 @@ Controller.prototype.name = 'BasicController';
 //withController должен передать сюда реальный диспатчер
 Controller.prototype.dispatch = function () {};
 Controller.prototype.getGlobalState = function () {};
+Controller.prototype.componentWillReceiveProps = function () {};
