@@ -1,7 +1,7 @@
 import {Component as ReactComponent, createElement, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import hoistStatics from 'hoist-non-react-statics'
-
+import isFunction from 'lodash/isFunction';
 import BasicController from './controller';
 
 export function withController (Controller = BasicController) {
@@ -34,7 +34,7 @@ export function withController (Controller = BasicController) {
                 return canRender ? createElement(Component, {...this.props}) : null;
             }
         }
-        if (typeof Controller.prototype.componentWillReceiveProps === 'function' ) {
+        if (isFunction(Component.prototype.componentWillReceiveProps) && isFunction(Controller.prototype.componentWillReceiveProps)) {
             const fn = Component.prototype.componentWillReceiveProps;
             Component.prototype.componentWillReceiveProps = function (nextPops) {
                 Controller.prototype.componentWillReceiveProps(this.props, nextPops);
