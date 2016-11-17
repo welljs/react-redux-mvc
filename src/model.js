@@ -100,6 +100,10 @@ class Model {
         _set(this.state, newState);
         return this;
     }
+
+    equals (prop, value, exact = false) {
+        return exact ? this.getState(prop) === value : this.getState(prop) == value;
+    }
 }
 
 export default Model;
