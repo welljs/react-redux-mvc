@@ -10,6 +10,10 @@ class Collection {
         items.forEach(item => this.models.push(new Model(item)));
     }
 
+    /**
+     * возвращает массив со стейтами моделей
+     * @returns {*}
+     */
     getState() {
         return this.models.reduce((res, model) => (res.push(model.getState()), res), []);
     }
