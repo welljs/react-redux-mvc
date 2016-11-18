@@ -1,4 +1,5 @@
 import DefaultModel from './model';
+import {generateGuid} from './helpers';
 class Collection {
     models = [];
     static Model = DefaultModel;
@@ -8,7 +9,10 @@ class Collection {
     }
 
     _prepare (items, Model) {
-        items.forEach(item => this.models.push(new Model(item)));
+        items.forEach(item => {
+            item._id = generateGuid();
+            this.models.push(new Model(item));
+        });
     }
 
     /**
@@ -40,7 +44,7 @@ class Collection {
     }
 
     remove (model) {
-        const index = this.findIndex('Id', model.getState('Id'));
+        const index = this.findIndex('_id', model.getState('_id'));
         this.models.splice(index, 1);
         return this;
     }
@@ -57,13 +61,17 @@ class Collection {
         return this.models.lenght;
     }
 
-    add (data, index) {
+    insert (data, index) {
         if (index) {
-            this.models.splice(index, 0, new this.Model(data));
+            this.models.splice(index, 0, new this.constructor.Model(data));
         }
         else {
-            this.models.push(new this.Model(data));
+            this.models.push(new this.constructor.Model(data));
         }
+    }
+
+    add (data) {
+        this.models.push(new this.constructor.Model(data));
     }
 
     //todo sort
