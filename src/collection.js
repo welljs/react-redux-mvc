@@ -1,8 +1,9 @@
 import DefaultModel from './model';
 class Collection {
     models = [];
-    constructor (items = [], Model = DefaultModel) {
-        this._prepare(items, Model);
+    static Model = DefaultModel;
+    constructor (items = []) {
+        this._prepare(items, this.constructor.Model);
         return this;
     }
 
