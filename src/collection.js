@@ -36,7 +36,7 @@ class Collection {
     }
 
     findByIndex (index) {
-        return this.model[index];
+        return this.models[index];
     }
 
     remove (model) {
@@ -54,7 +54,16 @@ class Collection {
     }
 
     size () {
-        return this.model.lenght;
+        return this.models.lenght;
+    }
+
+    add (data, index) {
+        if (index) {
+            this.models.splice(index, 0, new this.Model(data));
+        }
+        else {
+            this.models.push(new this.Model(data));
+        }
     }
 
     //todo sort
