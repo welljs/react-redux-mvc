@@ -58,7 +58,7 @@ class Collection {
     }
 
     size () {
-        return this.models.lenght;
+        return this.models.length;
     }
 
     insert (data, index) {
