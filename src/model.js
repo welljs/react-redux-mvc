@@ -78,7 +78,15 @@ class Model {
         }
         //устанавливает значения для целого объекта
         if (_isPlainObject(prop)) {
-            this.state = merge(cloneDeep(this.state), prop);
+            const key = Object.keys(prop)[0];
+            const piece = this.getState(key);
+            //для вложенных свойств
+            if (!!~key.indexOf('.') && piece && !!prop[key]) {
+                _set(this.state, key, merge(cloneDeep(piece), prop[key]));
+            }
+            else {
+                this.state = merge(cloneDeep(this.state), prop);
+            }
         }
         else if (typeof prop === 'string' && value !== undefined) {
             //позволяет устанавливать значения для вложенных ключей. Нармер set('user.name','Ivan')
