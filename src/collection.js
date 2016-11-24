@@ -10,7 +10,7 @@ class Collection {
 
     _prepare (items, Model) {
         items.forEach(item => {
-            item._id = generateGuid();
+            item._id = item._id || generateGuid();
             this.models.push(new Model(item));
         });
     }
