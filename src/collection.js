@@ -3,7 +3,8 @@ import {generateGuid} from './helpers';
 class Collection {
     models = [];
     static Model = DefaultModel;
-    constructor (items = []) {
+    constructor (items = [], options = {}) {
+        this.options = options;
         this._prepare(items, this.constructor.Model);
         return this;
     }

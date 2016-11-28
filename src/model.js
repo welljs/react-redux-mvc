@@ -15,7 +15,8 @@ class Model {
         __failed: {}
     };
 
-    constructor (props) {
+    constructor (props, options = {}) {
+        this.options = options;
         if (props) {
             this.set(prepare(props));
         }
