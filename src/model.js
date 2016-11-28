@@ -106,7 +106,7 @@ class Model {
     }
 
     reset (newState) {
-        _set(this.state, newState);
+        this.state = newState;
         return this;
     }
 
