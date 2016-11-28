@@ -5,21 +5,19 @@ import _isPlainObject from 'lodash/isPlainObject';
 import cloneDeep from 'lodash/cloneDeep';
 import {merge} from './helpers';
 
-function prepare (obj) {
-    return obj;
-}
-
 class Model {
     state = {
         __waiting: {},
         __failed: {}
     };
 
+    _prepare (data) {
+        this.reset(data);
+    }
+
     constructor (props, options = {}) {
         this.options = options;
-        if (props) {
-            this.set(prepare(props));
-        }
+        this._prepare(props);
         this._createShape();
     }
 
