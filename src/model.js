@@ -104,7 +104,7 @@ class Model {
     }
 
     reset (newState) {
-        this.state = newState;
+        this.state = cloneDeep(newState);
         return this;
     }
 
