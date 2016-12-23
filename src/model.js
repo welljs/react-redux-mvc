@@ -80,7 +80,7 @@ class Model {
             const key = Object.keys(prop)[0];
             const piece = this.getState(key);
             //для вложенных свойств
-            if (!!~key.indexOf('.') && piece && !!prop[key]) {
+            if (key && !!~key.indexOf('.') && piece && !!prop[key]) {
                 _set(this.state, key, merge(cloneDeep(piece), prop[key]));
             }
             else {
