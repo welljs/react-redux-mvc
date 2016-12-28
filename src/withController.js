@@ -37,7 +37,7 @@ export function withController (Controller = BasicController) {
         if (isFunction(Component.prototype.componentWillReceiveProps) && isFunction(Controller.prototype.componentWillReceiveProps)) {
             const fn = Component.prototype.componentWillReceiveProps;
             Component.prototype.componentWillReceiveProps = function (nextPops) {
-                Controller.prototype.componentWillReceiveProps(this.props, nextPops);
+                Controller.prototype.componentWillReceiveProps.call(Component.prototype.controller, this.props, nextPops);
                 fn.call(this, nextPops);
             };
         }

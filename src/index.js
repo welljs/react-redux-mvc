@@ -1,4 +1,3 @@
-import {applyReducer} from 'easy-redux';
 export {default as Controller} from './controller';
 export {createAsyncDefaults, createAsyncShape} from './helpers';
 import Model from './model';
