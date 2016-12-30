@@ -25,7 +25,7 @@ export function withController (Controller = BasicController) {
                 Controller.prototype.dispatch = this.store.dispatch;
 
                 Controller.prototype.getGlobalState = function (prop) {
-                    return prop ? this.store.getState[prop] : this.store.getState;
+                    return prop ? this.store.getState()[prop] : this.store.getState();
                 }.bind(this);
 
                 const controller = new Controller();
