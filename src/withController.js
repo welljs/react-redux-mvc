@@ -26,7 +26,7 @@ export function withController (Controller = BasicController) {
 
                 Controller.prototype.getGlobalState = function (prop) {
                     return prop ? this.store.getState[prop] : this.store.getState;
-                };
+                }.bind(this);
 
                 const controller = new Controller();
                 Component.prototype.controller = controller;
