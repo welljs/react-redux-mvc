@@ -23,7 +23,11 @@ export function withController (Controller = BasicController) {
                 this.store = props.store || context.store;
                 Controller.prototype.name = Component.prototype.constructor.name + 'Controller';
                 Controller.prototype.dispatch = this.store.dispatch;
-                Controller.prototype.getGlobalState = this.store.getState;
+
+                Controller.prototype.getGlobalState = function (prop) {
+                    return prop ? this.store.getState[prop] : this.store.getState;
+                };
+
                 const controller = new Controller();
                 Component.prototype.controller = controller;
                 controller.onInit().then(() => this.setState({canRender: true}));
