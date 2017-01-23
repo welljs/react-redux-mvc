@@ -18,7 +18,7 @@ export default class Controller {
     static actions = {};
     constructor (Model, ...props) {
         this.Model = Model;
-        this.checkSettings();
+        // this.checkSettings();
         this.storeKey = this.constructor.storeKey;
         this.actions = this.constructor.actions;
         this.propTypes = this.constructor.propTypes;

@@ -14,11 +14,15 @@ class Model {
     _prepare (data) {
         this.reset(data);
     }
+    onInit() {
+        return this;
+    }
 
     constructor (props, options = {}) {
         this.options = options;
         this._prepare(props);
         this._createShape();
+        this.onInit();
     }
 
     setWaiting (prop) {
