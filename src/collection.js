@@ -6,6 +6,11 @@ class Collection {
     constructor (items = [], options = {}) {
         this.options = options;
         this._prepare(items, this.constructor.Model);
+        this.onInit();
+        return this;
+    }
+
+    onInit () {
         return this;
     }
 
