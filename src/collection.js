@@ -36,6 +36,30 @@ class Collection {
         return this.models.find(model => model.equals(prop, value));
     }
 
+    filter (prop, value) {
+        return this.models.filter(model => model.equals(prop, value));
+    }
+
+    /**
+     * возвращает первую модель у которой свойство prop содержит значение value
+     * @param {String} prop
+     * @param {String} value
+     * @returns {Model}
+     */
+    findIncludes (prop, value) {
+        return this.models.find(model => model.includes(prop, value));
+    }
+
+    /**
+     * возвращает модели у которых свойство prop содержит значение value
+     * @param {String} prop
+     * @param {String} value
+     * @returns {Array <Model>}
+     */
+    filterIncludes (prop, value) {
+        return this.models.filter(model => model.includes(prop, value));
+    }
+
     findIndex (prop, value) {
         return this.models.findIndex(model => model.equals(prop, value));
     }

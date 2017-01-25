@@ -115,6 +115,16 @@ class Model {
     equals (prop, value, exact = false) {
         return exact ? this.getState(prop) === value : this.getState(prop) == value;
     }
+
+    includes (prop, value, caseSensitive=false) {
+        if (caseSensitive) {
+            return !!~(this.getState(prop) || '').indexOf(value);
+        }
+        else {
+            return !!~(this.getState(prop) || '').toLocaleLowerCase().indexOf(value.toLocaleLowerCase());
+        }
+
+    }
 }
 
 export default Model;
