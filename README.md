@@ -52,17 +52,13 @@ import {STORE_KEY} from './common';
 
 @withController(ProfileController)
 export default class ProfileForm extends Component {
-  onSubmit = (e) => {
-    e.preventDefault();
-    this.controller.submit(this.props[STORE_KEY].userData);
-  };
   render () {
-    const {[STORE_KEY]: {userData: {firstName, lastName, age, department, phone, email}, isSaved}} = this.props;
+    const {[STORE_KEY]: {userData, userData: {firstName, lastName, age, department, phone, email}, isSaved}} = this.props;
     const isSubmitWaiting = this.controller.isSubmitWaiting();
     return (
       <div>
         {isSaved && <h1>Data saved!</h1>}
-        <form onSubmit={this.onSubmit}>
+        <form onSubmit={e => this.controller.onSubmit(userData, e)}>
           <input type="text" value={firstName} onChange={e => this.controller.updateUserData('firstName', e.target.value)} placeholder="First name"/><br/>
           <input type="text" value={lastName} onChange={e => this.controller.updateUserData('lastName', e.target.value)} placeholder="Last name"/><br/>
           <input type="text" value={age} onChange={e => this.controller.updateUserData('age', e.target.value)} placeholder="Age"/><br/>
@@ -103,7 +99,8 @@ export default class ProfileController extends Controller {
     this.action(ACTION_UPDATE_PROFILE, {[prop]: value});
   };
 
-  submit = (userData) => {
+  submit = (userData, e) => {
+    e.preventDefault();
     this.action(ASYNC_ACTION_SUBMIT_PROFILE, userData);
   };
 
