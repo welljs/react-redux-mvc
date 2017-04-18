@@ -30,7 +30,7 @@ class Collection {
     }
 
     last () {
-        return [...this.models].pop();
+        return [...this.models][this.size()];
     }
 
     first () {
