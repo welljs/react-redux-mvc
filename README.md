@@ -53,7 +53,20 @@ import {STORE_KEY} from './common';
 @withController(ProfileController)
 export default class ProfileForm extends Component {
   render () {
-    const {[STORE_KEY]: {userData, userData: {firstName, lastName, age, department, phone, email}, isSaved}} = this.props;
+    const {
+      [STORE_KEY]: {
+        userData, 
+        userData: {
+          firstName, 
+          lastName, 
+          age, 
+          department, 
+          phone, 
+          email
+        }, 
+        isSaved
+      }
+    } = this.props;
     const isSubmitWaiting = this.controller.isSubmitWaiting();
     return (
       <div>
