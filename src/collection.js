@@ -125,8 +125,7 @@ class Collection {
     }
 
     _modelProto () {
-      const CollectionProto = Object.getPrototypeOf(Collection);
-      return CollectionProto.Model;
+      return this.constructor.Model;
     }
 
     //todo sort
