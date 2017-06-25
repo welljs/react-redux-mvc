@@ -92,16 +92,41 @@ class Collection {
     }
 
     insert (data, index) {
-        if (index) {
-            this.models.splice(index, 0, new this.constructor.Model(data));
+        const Model = this._modelProto();
+        let newModel;
+
+        if (data instanceof Model) {
+          newModel = data;
         }
         else {
-            this.models.push(new this.constructor.Model(data));
+          newModel = new Model(data);
         }
+
+        if (index) {
+            this.models.splice(index, 0, newModel);
+        }
+        else {
+            this.models.push(newModel);
+        }
+        return newModel;
     }
 
     add (data) {
-        this.models.push(new this.constructor.Model(data));
+        const Model = this._modelProto();
+        let newModel;
+        if (data instanceof Model) {
+            newModel = data;
+        }
+        else {
+            newModel = new Model(data);
+        }
+        this.models.push(newModel);
+        return newModel;
+    }
+
+    _modelProto () {
+      const CollectionProto = Object.getPrototypeOf(Collection);
+      return CollectionProto.Model;
     }
 
     //todo sort
