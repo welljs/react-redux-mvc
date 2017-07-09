@@ -1,6 +1,6 @@
 {
   "name": "react-redux-mvc",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "description": "Implementation of MVC pattern based on React-Redux bunch",
   "main": "lib/index.js",
   "scripts": {
