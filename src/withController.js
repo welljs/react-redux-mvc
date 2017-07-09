@@ -28,7 +28,7 @@ export function withController (Controller = BasicController) {
                     return prop ? this.store.getState()[prop] : this.store.getState();
                 }.bind(this);
 
-                const controller = new Controller();
+                const controller = new Controller(props, context);
                 Component.prototype.controller = controller;
                 controller.onInit().then(() => this.setState({canRender: true}));
             }
