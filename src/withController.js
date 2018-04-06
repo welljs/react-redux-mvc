@@ -1,4 +1,5 @@
-import {Component as ReactComponent, createElement, PropTypes} from 'react';
+import {Component as ReactComponent, createElement} from 'react';
+import { object } from 'prop-types';
 import {connect} from 'react-redux';
 import hoistStatics from 'hoist-non-react-statics'
 import isFunction from 'lodash/isFunction';
@@ -9,7 +10,7 @@ export function withController (Controller = BasicController) {
         @connect(state => Controller.prototype.mappedProps(state))
         class Wrapper extends ReactComponent {
             static contextTypes = {
-                store: PropTypes.object
+                store: object
             };
 
             static propTypes = Controller.propTypes;

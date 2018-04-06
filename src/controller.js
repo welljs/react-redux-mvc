@@ -1,4 +1,3 @@
-import {PropTypes} from 'react';
 import _get from 'lodash/get';
 
 function noModelWarning (controllerName) {
@@ -21,7 +20,6 @@ export default class Controller {
         // this.checkSettings();
         this.storeKey = this.constructor.storeKey;
         this.actions = this.constructor.actions;
-        this.propTypes = this.constructor.propTypes;
     }
 
     /**

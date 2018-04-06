@@ -1,6 +1,6 @@
 {
   "name": "react-redux-mvc",
-  "version": "0.9.2",
+  "version": "0.10.0",
   "description": "Implementation of MVC pattern based on React-Redux bunch",
   "main": "lib/index.js",
   "scripts": {
@@ -58,11 +58,12 @@
     "webpack": "2.1.0-beta.6"
   },
   "dependencies": {
-    "react-dom": "^16.3.1",
-    "react": "^16.3.1",
-    "react-redux": "^5.0.5",
-    "redux": "^3.7.0",
     "easy-redux": "^0.4.0",
-    "hoist-non-react-statics": "^1.2.0"
+    "hoist-non-react-statics": "^1.2.0",
+    "prop-types": "^15.6.1",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
+    "react-redux": "^5.0.5",
+    "redux": "^3.7.0"
   }
 }

@@ -1,13 +1,14 @@
-import React, { Component, PropTypes, Children } from 'react';
+import React, { Component, Children } from 'react';
+import { object, element } from 'prop-types';
 
 export default class ReactReduxMvc extends Component {
     static propTypes = {
-        children: PropTypes.element.isRequired,
-        store: PropTypes.object.isRequired
+        children: element.isRequired,
+        store: object.isRequired
     };
 
     static childContextTypes = {
-        store: PropTypes.object.isRequired
+        store: object.isRequired
     };
 
     getChildContext() {

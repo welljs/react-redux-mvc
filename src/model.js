@@ -1,4 +1,4 @@
-import {PropTypes} from 'react';
+import {object} from 'prop-types';
 import _get from 'lodash/get';
 import _set from 'lodash/set';
 import _isPlainObject from 'lodash/isPlainObject';
@@ -62,7 +62,6 @@ class Model {
     }
 
     _createShape () {
-        const {object} = PropTypes;
         this.constructor.shape = Object.assign({
             ...(this.constructor.shape || {}),
             __waiting: object.isRequired,

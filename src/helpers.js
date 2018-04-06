@@ -1,4 +1,3 @@
-import {PropTypes} from 'react';
 import mergeWith from 'lodash/mergeWith';
 import isArray from 'lodash/isArray';
 export function merge (dst, src) {
