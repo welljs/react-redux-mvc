@@ -1,6 +1,6 @@
 {
   "name": "react-redux-mvc",
-  "version": "0.8.1",
+  "version": "0.9.1",
   "description": "Implementation of MVC pattern based on React-Redux bunch",
   "main": "lib/index.js",
   "scripts": {
@@ -39,6 +39,8 @@
   },
   "homepage": "https://github.com/welljs/react-redux-mvc#readme",
   "devDependencies": {
+    "react-dom": "^15.4.0",
+    "react": "^15.4.0",
     "babel-cli": "^6.6.4",
     "babel-core": "6.6.4",
     "babel-loader": "^6.2.4",
@@ -58,11 +60,9 @@
     "webpack": "2.1.0-beta.6"
   },
   "dependencies": {
-    "react-dom": "^15.4.0",
-    "easy-redux": "^0.4.0",
-    "hoist-non-react-statics": "^1.2.0",
-    "react": "^15.4.0",
     "react-redux": "^5.0.5",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "easy-redux": "^0.4.0",
+    "hoist-non-react-statics": "^1.2.0"
   }
 }
