@@ -1,28 +1,29 @@
 import {get as _get} from 'lodash';
+import {Dispatch, Action} from 'redux';
+import {Model} from './model';
 
 export interface IControllerActions {
   [name: string]: (any);
 }
 
 // Базовый контроллер
-export class Controller<T> {
+export class Controller<T extends Model<any>> {
   // список полей, которые надо получить из стора.
   // чтобы получить вложенные, надо указать их через точку: routing.location
   public static connectedState: string[] = [];
   // действия которые надо обернуть dispatch-ем
-  public static actions: IControllerActions = {};
-
-  public name: string;
-  public getGlobalState: () => void;
-  public componentWillReceiveProps: () => void;
+  public static actions: any = {};
   public storeKey: string | null = null;
+  public name: string = 'BasicController';
+  public getGlobalState: () => void = () => {};
+  public dispatch: (fn: () => any) => Dispatch<Action> = () => {};
+  public componentWillReceiveProps: () => void = () => {};
   public Model: T;
 
   public constructor(Model: T, ...props) {
     this.Model = Model;
-    // this.checkSettings();
-    this.storeKey = this.constructor.storeKey;
-    this.actions = this.constructor.actions;
+    // this.storeKey = Controller.storeKey;
+    // this.actions = Controller.actions;
   }
 
   /**
@@ -32,7 +33,7 @@ export class Controller<T> {
    * @returns {*}
    */
   public mappedProps(state) {
-    return this.constructor.connectedState.reduce((result, prop) => {
+    return Controller.connectedState.reduce((result, prop) => {
       let key: string = prop;
       if (prop.includes(':')) {
         const parts: string[] = prop.split(':');
@@ -47,12 +48,12 @@ export class Controller<T> {
    * диспатчит действие
    * @param args
    */
-  public action(...args): Error {
+  public action(...args): Dispatch<Action> {
     const [name, ...restArguments] = args;
     if (typeof name === 'function') {
       return this.dispatch(name.apply(undefined, restArguments));
     }
-    const action = this.actions[name];
+    const action = Controller.actions[name];
     if (typeof action !== 'function') {
       throw Error('Action must be a function');
     }
@@ -71,17 +72,19 @@ export class Controller<T> {
    * @param {String} prop
    * @returns {undefined}
    */
-  public getState(prop) {
-    return prop ? _get(this.getGlobalState()[this.storeKey], prop) : this.getGlobalState()[this.storeKey];
+  public getState(prop?: string): any {
+    if (this.storeKey) {
+      return prop ? _get(this.getGlobalState()[this.storeKey], prop) : this.getGlobalState()[this.storeKey];
+    }
   }
 
   /**
    * возвращает ожидающие
    * @returns {*}
    */
-  public getWaiting() {
+  public getWaiting(): object | void {
     if (this.Model) {
-      return new this.Model(this.getState()).getWaiting();
+      return this.Model.constructor(this.getState()).getWaiting();
     }
     else {
       noModelWarning(this.name);
@@ -90,7 +93,7 @@ export class Controller<T> {
 
   public isWaiting(prop): boolean | void {
     if (this.Model) {
-      return !!new this.Model(this.getState()).isWaiting(prop);
+      return !!this.Model.constructor(this.getState()).isWaiting(prop);
     }
     else {
       noModelWarning(this.name);
@@ -99,7 +102,7 @@ export class Controller<T> {
 
   public isFailed(prop): boolean | void {
     if (this.Model) {
-      return !!new this.Model(this.getState()).isFailed(prop);
+      return !!this.Model.constructor(this.getState()).isFailed(prop);
     }
     else {
       noModelWarning(this.name);
@@ -110,36 +113,16 @@ export class Controller<T> {
    * возвращает ошибки
    * @returns {*}
    */
-  public getFailed() {
+  public getFailed(): object | void {
     if (this.Model) {
-      return new this.Model(this.getState()).getFailed();
+      return this.Model.constructor(this.getState()).getFailed();
     }
     else {
       noModelWarning(this.name);
     }
-
-  }
-
-  /**
-   * проверяет, чтобы все необходимое было установлено
-   */
-  // TODO: непонятно, нужен ли этот метод
-  private checkSettings(): Error | void {
-    if (!this.constructor.storeKey) {
-      throw new Error(`Store key in ${this.name} must be defined`);
-    }
   }
 }
 
-Controller.prototype.name = 'BasicController';
-// withController должен передать сюда реальный диспатчер
-Controller.prototype.dispatch = function () {
-};
-Controller.prototype.getGlobalState = function () {
-};
-Controller.prototype.componentWillReceiveProps = function () {
-};
-
-function noModelWarning(controllerName: string): Error {
+function noModelWarning(controllerName: string): void {
   throw new Error(`There is Model provided to ${controllerName}`);
 }

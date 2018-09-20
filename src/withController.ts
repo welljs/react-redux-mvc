@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import hoistStatics from 'hoist-non-react-statics';
-import isFunction from 'lodash/isFunction';
+import {isFunction} from 'lodash';
 import * as BasicController from './Controller';
 
 export interface IWrapperProps {

@@ -1,6 +1,4 @@
-import {PropTypes} from 'react';
-import mergeWith from 'lodash/mergeWith';
-import isArray from 'lodash/isArray';
+import {mergeWith, isArray} from 'lodash';
 
 export function merge(dst, src) {
   // чтобы не мержить массиы, возвращается исходный
