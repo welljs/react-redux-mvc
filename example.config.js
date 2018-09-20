@@ -14,13 +14,13 @@ const resolve = {
 const include = [];
 
 if (useSources) {
-    resolve.alias['react-redux-mvc'] = path.join(__dirname, './src/index.js');
+    resolve.alias['react-redux-mvc'] = path.join(__dirname, './src/index.ts');
     include.push(path.resolve(__dirname, `./example/src`));
     include.push(path.resolve(__dirname, `./src`));
     console.log(`\n> compile using sources...\n`);
 }
 else {
-    resolve.alias['react-redux-mvc'] = path.join(__dirname, './lib/index.js');
+    resolve.alias['react-redux-mvc'] = path.join(__dirname, './lib/index.ts');
     include.push(path.resolve(__dirname, `./example/src`));
     include.push(path.resolve(__dirname, `./lib`));
     console.log('\n> compile using production lib...\n');

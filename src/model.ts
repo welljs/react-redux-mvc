@@ -1,17 +1,29 @@
-import {get as _get, set as _set, isPlainObject, cloneDeep} from 'lodash';
+import {set as _set, isPlainObject, cloneDeep} from 'lodash';
 import {merge} from './helpers';
-import MVC from 'react-redux-mvc';
 
-const stateDefaults = () => ({
+export interface IDefaultState {
+  __waiting: object;
+  __failed: object;
+  _id?: string;
+}
+
+export type TState<T> = T & IDefaultState;
+
+export interface IDefaultModelOptions {
+  action?: string;
+}
+
+const stateDefaults = (): IDefaultState => ({
   __waiting: {},
-  __failed: {}
+  __failed: {},
 });
 
-class Model<MData extends object, MOptions> implements MVC.Model<MData, MOptions> {
-  public state: MVC.TState<MData>;
-  public options: MVC.TModelOptions<MOptions>;
-  constructor(props: MData, options: MVC.TModelOptions<MOptions>) {
-    this.options = options;
+export class Model<MData extends object> {
+  public state: TState<MData>;
+  public options?: IDefaultModelOptions;
+
+  public constructor(props: MData, options?: IDefaultModelOptions) {
+    this.options = options || {};
     this.prepare(props);
     this.onInit();
     return this;
@@ -21,31 +33,31 @@ class Model<MData extends object, MOptions> implements MVC.Model<MData, MOptions
     return this;
   }
 
-  public setWaiting(prop): this {
+  public setWaiting(prop: string | any): this {
     return this.set('__waiting.' + prop, true);
   }
 
-  public resetWaiting(prop): this {
+  public resetWaiting(prop: string | any): this {
     return this.set('__waiting.' + prop, false);
   }
 
-  public setFailed(prop): this {
+  public setFailed(prop: string | any): this {
     return this.set('__failed.' + prop, true);
   }
 
-  public resetFailed(prop): this {
+  public resetFailed(prop: string | any): this {
     return this.set('__failed.' + prop, false);
   }
 
-  public isWaiting(key): boolean {
+  public isWaiting(key: string): boolean {
     return !!this.getState('__waiting.' + key);
   }
 
-  public isFailed(key) {
+  public isFailed(key: any): boolean {
     return !!this.getState('__failed.' + key);
   }
 
-  public getWaiting(): MVC.TState<MData> {
+  public getWaiting(): object {
     return this.getState().__waiting;
   }
 
@@ -58,7 +70,7 @@ class Model<MData extends object, MOptions> implements MVC.Model<MData, MOptions
    * @param {String|Object} prop
    * @param value
    */
-  public set(prop: string | object, value?: any) {
+  public set(prop: string | object, value?: any): this {
     if (!prop) {
       throw Error('Property must be set');
     }
@@ -86,20 +98,20 @@ class Model<MData extends object, MOptions> implements MVC.Model<MData, MOptions
     return this;
   }
 
-  public getState(prop?: string): MVC.TState<MData> {
+  public getState(prop?: string): TState<MData> {
     return this.state;
   }
 
-  public reset(newState: MVC.TState<MData>): this {
+  public reset(newState: TState<MData>): this {
     this.state = cloneDeep(newState);
     return this;
   }
 
-  public equals(prop: string, value: any, exact = false) {
+  public equals(prop: string, value: any, exact = false): boolean {
     return exact ? this.getState(prop) === value : this.getState(prop) == value;
   }
 
-  public includes(prop: string, value: string, caseSensitive = false) {
+  public includes(prop: string, value: string, caseSensitive = false): boolean | Error {
     const currentValue = this.getState(prop);
     if (typeof currentValue !== 'string' && !(currentValue instanceof String) ) {
       throw Error('value should be a string type');
@@ -116,5 +128,3 @@ class Model<MData extends object, MOptions> implements MVC.Model<MData, MOptions
     return this.reset(Object.assign({}, stateDefaults(), data));
   }
 }
-
-export default Model;
