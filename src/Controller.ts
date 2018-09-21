@@ -1,13 +1,13 @@
 import {get as _get} from 'lodash';
-import {Dispatch, Action} from 'redux';
-import {Model} from './model';
+import {Dispatch, Action, Store} from 'redux';
+import {Model} from './Model';
 
 export interface IControllerActions {
-  [name: string]: (any);
+  [name: string]: any;
 }
 
 // Базовый контроллер
-export class Controller<T extends Model<any>> {
+export class Controller<T extends Model<object>> {
   // список полей, которые надо получить из стора.
   // чтобы получить вложенные, надо указать их через точку: routing.location
   public static connectedState: string[] = [];
@@ -20,10 +20,8 @@ export class Controller<T extends Model<any>> {
   public componentWillReceiveProps: () => void = () => {};
   public Model: T;
 
-  public constructor(Model: T, ...props) {
+  public constructor(Model: T) {
     this.Model = Model;
-    // this.storeKey = Controller.storeKey;
-    // this.actions = Controller.actions;
   }
 
   /**
@@ -32,7 +30,7 @@ export class Controller<T extends Model<any>> {
    * @param {[String]} state - свойства стора которые надо приконенктить
    * @returns {*}
    */
-  public mappedProps(state) {
+  public mappedProps(state: string): object {
     return Controller.connectedState.reduce((result, prop) => {
       let key: string = prop;
       if (prop.includes(':')) {

@@ -1,14 +1,15 @@
-import * as DefaultModel from './Model';
+import {Model, IDefaultModelOptions, TState} from './Model';
 import {generateGuid} from './helpers';
 
-export class Collection<M extends DefaultModel.Model<any>> {
-  public static Model = DefaultModel.Model;
-  public models: M[]  = [];
-  public options: DefaultModel.IDefaultModelOptions = {};
+interface IModelData {
+  [name: string]: any;
+}
 
-  public constructor(items: any[] = [], options = {}) {
-    this.options = options;
-    this._prepare(items, this.constructor.Model);
+export class Collection<T extends IModelData> {
+  public models: Model<T>[]  = [];
+
+  public constructor(items: T[] = [], options: IDefaultModelOptions = {}) {
+    this._prepare(items, options);
     this.onInit();
     return this;
   }
@@ -21,24 +22,24 @@ export class Collection<M extends DefaultModel.Model<any>> {
    * возвращает массив со стейтами моделей
    * @returns {*}
    */
-  public getState(): M[] {
-    return this.models.reduce((res, model) => (res.push(model.getState()), res), []);
+  public getState(): TState<IModelData>[] {
+    return this.models.map((model) => model.getState());
   }
 
-  public last(): M {
+  public last(): Model<T> {
     return this.models[this.size()];
   }
 
-  public first(): M {
+  public first(): Model<T> {
     return this.models[0];
   }
 
-  public find(prop: string, value: any): M | undefined {
-    return this.models.find(model => model.equals(prop, value));
+  public find(prop: string, value: any): Model<T> | undefined {
+    return this.models.find(model => model.getState().equals(prop, value));
   }
 
-  public filter(prop: string, value: any): M[] {
-    return this.models.filter(model => model.equals(prop, value));
+  public filter(prop: string, value: any): Model<T>[] {
+    return this.models.filter(model => model.getState().equals(prop, value));
   }
 
   /**
@@ -47,7 +48,7 @@ export class Collection<M extends DefaultModel.Model<any>> {
    * @param {String} value
    * @returns {Model}
    */
-  public findIncludes(prop: string, value: any): M | undefined {
+  public findIncludes(prop: string, value: any): Model<T> | undefined {
     return this.models.find(model => model.includes(prop, value));
   }
 
@@ -57,7 +58,7 @@ export class Collection<M extends DefaultModel.Model<any>> {
    * @param {String} value
    * @returns {Array <Model>}
    */
-  public filterIncludes(prop: string, value: any): M[] {
+  public filterIncludes(prop: string, value: any): Model<T>[] {
     return this.models.filter(model => model.includes(prop, value));
   }
 
@@ -65,17 +66,17 @@ export class Collection<M extends DefaultModel.Model<any>> {
     return this.models.findIndex(model => model.equals(prop, value));
   }
 
-  public findByIndex(index: number): M {
+  public findByIndex(index: number): Model<T> | undefined {
     return this.models[index];
   }
 
-  public remove(model: M): this {
+  public remove(model: Model<T>): this {
     const index = this.findIndex('_id', model.getState('_id'));
     this.models.splice(index, 1);
     return this;
   }
 
-  public reverse(): M[] {
+  public reverse(): Model<T>[] {
     return this.models.reverse();
   }
 
@@ -87,18 +88,15 @@ export class Collection<M extends DefaultModel.Model<any>> {
     return this.models.length;
   }
 
-  public insert(data: M | DefaultModel.Model<M>, index: number): DefaultModel.Model<M> {
-    const Model = this._modelProto();
-    let newModel;
-
+  public insert(data: Model<T> | T, index?: number): Model<T> {
+    let newModel: Model<T>;
     if (data instanceof Model) {
       newModel = data;
     }
     else {
       newModel = new Model(data);
     }
-
-    if (index) {
+    if (index !== undefined) {
       this.models.splice(index, 0, newModel);
     }
     else {
@@ -107,28 +105,11 @@ export class Collection<M extends DefaultModel.Model<any>> {
     return newModel;
   }
 
-  public add(data: M | DefaultModel.Model<M>): DefaultModel.Model<M> {
-    const Model = this._modelProto();
-    let newModel;
-    if (data instanceof Model) {
-      newModel = data;
-    }
-    else {
-      newModel = new Model(data);
-    }
-    this.models.push(newModel);
-    return newModel;
-  }
-
-  private _prepare(items: any[], Model: M) {
+  private _prepare(items: T[], options?: IDefaultModelOptions): void {
     items.forEach(item => {
       item._id = item._id || generateGuid();
-      this.models.push(new DefaultModel.Model(item));
+      this.models.push(new Model(item, options));
     });
-  }
-
-  private _modelProto() {
-    return this.constructor.Model;
   }
 
   // todo sort

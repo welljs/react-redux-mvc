@@ -54,10 +54,10 @@
     "tslint-react": "3.6.0",
     "typescript": "3.0.3",
     "webpack": "4.19.1",
-    "webpack-dev-server": "3.1.8"
+    "webpack-dev-server": "3.1.8",
+    "easy-redux": "0.4.4"
   },
   "dependencies": {
-    "easy-redux": "0.4.4",
     "hoist-non-react-statics": "3.0.1",
     "react": "16.5.2",
     "react-dom": "16.5.2",

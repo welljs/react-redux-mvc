@@ -18,11 +18,11 @@ const stateDefaults = (): IDefaultState => ({
   __failed: {},
 });
 
-export class Model<MData extends object> {
-  public state: TState<MData>;
+export class Model<T extends object> {
+  public state: TState<T>;
   public options?: IDefaultModelOptions;
 
-  public constructor(props: MData, options?: IDefaultModelOptions) {
+  public constructor(props: T, options?: IDefaultModelOptions) {
     this.options = options || {};
     this.prepare(props);
     this.onInit();
@@ -93,25 +93,25 @@ export class Model<MData extends object> {
     return this;
   }
 
-  public update(updates: object): this {
+  public update(updates: T): this {
     this.set(updates);
     return this;
   }
 
-  public getState(prop?: string): TState<MData> {
+  public getState(prop?: string): TState<T> {
     return this.state;
   }
 
-  public reset(newState: TState<MData>): this {
+  public reset(newState: TState<T>): this {
     this.state = cloneDeep(newState);
     return this;
   }
 
-  public equals(prop: string, value: any, exact = false): boolean {
+  public equals(prop: string, value: any, exact?: boolean): boolean {
     return exact ? this.getState(prop) === value : this.getState(prop) == value;
   }
 
-  public includes(prop: string, value: string, caseSensitive = false): boolean | Error {
+  public includes(prop: string, value: string, caseSensitive?: boolean): boolean {
     const currentValue = this.getState(prop);
     if (typeof currentValue !== 'string' && !(currentValue instanceof String) ) {
       throw Error('value should be a string type');
@@ -124,7 +124,7 @@ export class Model<MData extends object> {
     }
   }
 
-  private prepare(data: MData): this {
+  private prepare(data: T): this {
     return this.reset(Object.assign({}, stateDefaults(), data));
   }
 }
