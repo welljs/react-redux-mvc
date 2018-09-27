@@ -101,6 +101,7 @@ export class Collection<T extends IModelData> {
     }
     else {
       this.models.push(newModel);
+      console.log(123);
     }
     return newModel;
   }
