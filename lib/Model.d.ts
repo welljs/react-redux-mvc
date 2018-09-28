@@ -7,10 +7,10 @@ export declare type TState<T> = T & IDefaultState;
 export interface IDefaultModelOptions {
     action?: string;
 }
-export declare class Model<MData extends object> {
-    state: TState<MData>;
+export declare class Model<T extends object> {
+    state: TState<T>;
     options?: IDefaultModelOptions;
-    constructor(props: MData, options?: IDefaultModelOptions);
+    constructor(props: T, options?: IDefaultModelOptions);
     onInit(): this;
     setWaiting(prop: string | any): this;
     resetWaiting(prop: string | any): this;
@@ -21,10 +21,10 @@ export declare class Model<MData extends object> {
     getWaiting(): object;
     getFailed(): object;
     set(prop: string | object, value?: any): this;
-    update(updates: object): this;
-    getState(prop?: string): TState<MData>;
-    reset(newState: TState<MData>): this;
+    update(updates: T): this;
+    getState(prop?: string): TState<T>;
+    reset(newState: TState<T>): this;
     equals(prop: string, value: any, exact?: boolean): boolean;
-    includes(prop: string, value: string, caseSensitive?: boolean): boolean | Error;
+    includes(prop: string, value: string, caseSensitive?: boolean): boolean;
     private prepare;
 }

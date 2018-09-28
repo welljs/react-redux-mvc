@@ -27,7 +27,7 @@ export class Collection<T extends IModelData> {
   }
 
   public last(): Model<T> {
-    return this.models[this.size()];
+    return this.models[this.size() - 1];
   }
 
   public first(): Model<T> {

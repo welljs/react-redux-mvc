@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run test",
     "example": "better-npm-run example",
-    "build": "babel src --out-dir lib",
+    "build": "rm -rf lib && tsc && better-npm-run build",
     "dev": "better-npm-run dev",
     "lint": "tslint --project tsconfig.json"
   },
@@ -19,6 +19,12 @@
     },
     "example": {
       "command": "webpack --watch --config example.config.js ",
+      "env": {
+        "NODE_ENV": "dev"
+      }
+    },
+    "build": {
+      "command": "webpack --color --display-error-details --display-modules --mode production",
       "env": {
         "NODE_ENV": "dev"
       }
@@ -45,7 +51,10 @@
     "@types/react-dom": "16.0.7",
     "@types/react-redux": "6.0.9",
     "awesome-typescript-loader": "5.2.1",
+    "babel-cli": "6.26.0",
+    "babel-loader": "8.0.4",
     "better-npm-run": "0.1.1",
+    "easy-redux": "0.4.4",
     "html-webpack-plugin": "3.2.0",
     "resolve-url-loader": "3.0.0",
     "source-map-loader": "0.2.4",
@@ -54,15 +63,16 @@
     "tslint-react": "3.6.0",
     "typescript": "3.0.3",
     "webpack": "4.19.1",
-    "webpack-dev-server": "3.1.8",
-    "easy-redux": "0.4.4"
+    "webpack-cli": "^3.1.1",
+    "webpack-dev-server": "3.1.8"
   },
   "dependencies": {
+    "@types/redux-actions": "2.3.0",
     "hoist-non-react-statics": "3.0.1",
+    "lodash": "4.17.11",
     "react": "16.5.2",
     "react-dom": "16.5.2",
     "react-redux": "5.0.7",
-    "redux": "4.0.0",
-    "lodash": "4.17.11"
+    "redux": "4.0.0"
   }
 }

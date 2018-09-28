@@ -1,5 +1,6 @@
 import * as BasicController from './Controller';
-export interface IWrapperProps {
+import { Model } from './Model';
+export interface IWrapperProps extends Model<object> {
     store?: object;
 }
 export interface IWrapperState {

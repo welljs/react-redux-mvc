@@ -3,8 +3,9 @@ import {connect} from 'react-redux';
 import hoistStatics from 'hoist-non-react-statics';
 import {isFunction} from 'lodash';
 import * as BasicController from './Controller';
+import {Model} from './Model';
 
-export interface IWrapperProps {
+export interface IWrapperProps extends Model<object> {
   store?: object;
 }
 
@@ -12,10 +13,14 @@ export interface IWrapperState {
   canRender: boolean;
 }
 
+function mapStateToProps(state) {
+  return BasicController.Controller.prototype.mappedProps(state);
+}
+
 export function withController(Controller = BasicController.Controller) {
   return Component => {
-    @connect(state => BasicController.Controller.prototype.mappedProps(state))
     class Wrapper extends React.Component<IWrapperProps, IWrapperState> {
+      private store;
       public constructor(props: IWrapperProps, context) {
         super(props, context);
         const {store} = props;
@@ -25,7 +30,6 @@ export function withController(Controller = BasicController.Controller) {
         Controller.prototype.getGlobalState = function (prop) {
           return prop ? this.store.getState()[prop] : this.store.getState();
         }.bind(this);
-
         const controller = new Controller(props, context);
         Component.prototype.controller = controller;
         controller.onInit().then(() => this.setState({canRender: true}));
@@ -37,6 +41,8 @@ export function withController(Controller = BasicController.Controller) {
       }
     }
 
+
+    const connectedWrapper = connect(mapStateToProps)(Wrapper);
     if (isFunction(Component.prototype.componentWillReceiveProps) && isFunction(Controller.prototype.componentWillReceiveProps)) {
       const fn = Component.prototype.componentWillReceiveProps;
       Component.prototype.componentWillReceiveProps = function (nextPops) {
@@ -44,6 +50,6 @@ export function withController(Controller = BasicController.Controller) {
         fn.call(this, nextPops);
       };
     }
-    return hoistStatics(Wrapper, Component);
+    return hoistStatics(connectedWrapper, Component);
   };
 }
