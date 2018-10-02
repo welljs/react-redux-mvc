@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
     "module": "es6",
     "target": "es5",
     "lib":["dom", "es6", "dom.iterable", "scripthost", "es2016.array.include", "es2015.promise", "es2017"],
@@ -18,8 +18,7 @@
     "./node_modules/@types/lodash/get.d.ts"
   ],
   "include": [
-    "./src",
-    "./stories"
+    "./src"
   ],
   "exclude": [
     "./node_modules",

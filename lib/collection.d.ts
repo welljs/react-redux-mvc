@@ -6,7 +6,7 @@ export declare class Collection<T extends IModelData> {
     models: Model<T>[];
     constructor(items?: T[], options?: IDefaultModelOptions);
     onInit(): this;
-    getState(): TState<IModelData>[];
+    getState(): TState<T>[];
     last(): Model<T>;
     first(): Model<T>;
     find(prop: string, value: any): Model<T> | undefined;

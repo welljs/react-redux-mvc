@@ -21,7 +21,7 @@ export declare class Model<T extends object> {
     getWaiting(): object;
     getFailed(): object;
     set(prop: string | object, value?: any): this;
-    update(updates: T): this;
+    update(updates: Partial<T> | object): this;
     getState(prop?: string): TState<T>;
     reset(newState: TState<T>): this;
     equals(prop: string, value: any, exact?: boolean): boolean;

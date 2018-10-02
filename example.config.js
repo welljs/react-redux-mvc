@@ -5,11 +5,8 @@ const path = require('path');
 const useSources = false;
 
 const resolve = {
-    root: path.resolve(__dirname),
     alias: {},
-    extensions: ['', '.js', '.jsx'],
-    modulesDirectories: [ 'node_modules']
-
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
 };
 const include = [];
 
@@ -27,21 +24,26 @@ else {
 }
 
 module.exports = {
-    context: path.join(__dirname,'./'),
+    context: path.join(__dirname, './'),
     devtool: 'source-map',
-    entry: './example/src/app.js',
+    entry: './example/src/app.tsx',
     output: {
-        path: './example',
+        path: path.resolve(__dirname, `./example`),
         filename: 'example.js'
     },
     resolve,
     module: {
-        loaders: [
+        rules: [
             {
-                test: /\.js/,
-                loaders: ['babel-loader?cacheDirectory'],
-                include,
-            }
+                test: /\.(ts|tsx)$/,
+                loader: 'awesome-typescript-loader',
+                exclude: /(node_modules)/,
+            },
+            {
+                enforce: 'pre',
+                test: /\.js$/,
+                loader: 'source-map-loader'
+            },
         ]
     }
 };

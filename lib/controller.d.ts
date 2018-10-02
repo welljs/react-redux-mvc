@@ -1,4 +1,4 @@
-import { Dispatch, Action, AnyAction } from 'redux';
+import { AnyAction } from 'redux';
 import { Model } from './Model';
 export interface IControllerActions {
     [name: string]: any;
@@ -6,19 +6,19 @@ export interface IControllerActions {
 export declare class Controller<T extends Model<object>> {
     static connectedState: string[];
     static actions: any;
-    storeKey: string | null;
+    storeKey: string;
     name: string;
     getGlobalState: () => void;
+    componentWillReceiveProps(currentProps: T, nextProps: T): void;
     dispatch: <A extends AnyAction>(action: A) => A;
-    componentWillReceiveProps: () => void;
-    Model: T;
-    constructor(Model: T, ...props: any[]);
+    Model: Model<object>;
+    constructor(Model: any, ...props: any[]);
     mappedProps(state: string): object;
-    action(...args: any[]): Dispatch<Action>;
+    action(...args: any[]): Promise<any>;
     onInit: () => Promise<any>;
     getState(prop?: string): any;
-    getWaiting(): object | void;
-    isWaiting(prop: any): boolean | void;
-    isFailed(prop: any): boolean | void;
-    getFailed(): object | void;
+    getWaiting(): object;
+    isWaiting(prop: any): boolean;
+    isFailed(prop: any): boolean;
+    getFailed(): object;
 }

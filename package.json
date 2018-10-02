@@ -3,20 +3,14 @@
   "version": "0.8.1",
   "description": "Implementation of MVC pattern based on React-Redux bunch",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "test": "npm run test",
     "example": "better-npm-run example",
-    "build": "rm -rf lib && tsc && better-npm-run build",
-    "dev": "better-npm-run dev",
+    "build": "rm -rf lib && better-npm-run build",
     "lint": "tslint --project tsconfig.json"
   },
   "betterScripts": {
-    "dev": {
-      "command": "webpack --watch",
-      "env": {
-        "NODE_ENV": "dev"
-      }
-    },
     "example": {
       "command": "webpack --watch --config example.config.js ",
       "env": {
@@ -56,14 +50,16 @@
     "better-npm-run": "0.1.1",
     "easy-redux": "0.4.4",
     "html-webpack-plugin": "3.2.0",
+    "jest": "23.6.0",
     "resolve-url-loader": "3.0.0",
     "source-map-loader": "0.2.4",
+    "ts-jest": "23.10.3",
     "tslint": "5.11.0",
     "tslint-loader": "3.6.0",
     "tslint-react": "3.6.0",
     "typescript": "3.0.3",
     "webpack": "4.19.1",
-    "webpack-cli": "^3.1.1",
+    "webpack-cli": "3.1.1",
     "webpack-dev-server": "3.1.8"
   },
   "dependencies": {

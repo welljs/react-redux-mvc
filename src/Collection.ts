@@ -22,7 +22,7 @@ export class Collection<T extends IModelData> {
    * возвращает массив со стейтами моделей
    * @returns {*}
    */
-  public getState(): TState<IModelData>[] {
+  public getState(): TState<T>[] {
     return this.models.map((model) => model.getState());
   }
 
@@ -101,7 +101,6 @@ export class Collection<T extends IModelData> {
     }
     else {
       this.models.push(newModel);
-      console.log(123);
     }
     return newModel;
   }

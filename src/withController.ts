@@ -7,6 +7,7 @@ import {Model} from './Model';
 
 export interface IWrapperProps extends Model<object> {
   store?: object;
+  dispatch?: any;
 }
 
 export interface IWrapperState {
@@ -23,10 +24,15 @@ export function withController(Controller = BasicController.Controller) {
       private store;
       public constructor(props: IWrapperProps, context) {
         super(props, context);
-        const {store} = props;
+        this.state = {
+          canRender: false
+        };
+        const {store, dispatch} = props;
         this.store = store || context.store;
         Controller.prototype.name = Component.prototype.constructor.name + 'Controller';
-        Controller.prototype.dispatch = this.store.dispatch;
+        if ((this.store && this.store.dispatch) || dispatch) {
+          Controller.prototype.dispatch = this.store && this.store.dispatch ? this.store.dispatch : dispatch;
+        }
         Controller.prototype.getGlobalState = function (prop) {
           return prop ? this.store.getState()[prop] : this.store.getState();
         }.bind(this);

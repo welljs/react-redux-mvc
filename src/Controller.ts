@@ -13,14 +13,14 @@ export class Controller<T extends Model<object>> {
   public static connectedState: string[] = [];
   // действия которые надо обернуть dispatch-ем
   public static actions: any = {};
-  public storeKey: string | null = null;
+  public storeKey: string = '';
   public name: string = 'BasicController';
   public getGlobalState: () => void = () => {};
-  public dispatch: <A extends AnyAction>(action: A) => A = (action) => {return action};
-  public componentWillReceiveProps: () => void = () => {};
-  public Model: T;
+  public componentWillReceiveProps(currentProps: T, nextProps: T): void {};
+  public dispatch: <A extends AnyAction>(action: A) =>A = (action) => {return action};
+  public Model: Model<object>;
 
-  public constructor(Model: T, ...props) {
+  public constructor(Model, ...props) {
     this.Model = Model;
   }
 
@@ -46,7 +46,7 @@ export class Controller<T extends Model<object>> {
    * диспатчит действие
    * @param args
    */
-  public action(...args): Dispatch<Action> {
+  public action(...args): Promise<any> {
     const [name, ...restArguments] = args;
     if (typeof name === 'function') {
       return this.dispatch(name.apply(undefined, restArguments));
@@ -80,30 +80,33 @@ export class Controller<T extends Model<object>> {
    * возвращает ожидающие
    * @returns {*}
    */
-  public getWaiting(): object | void {
+  public getWaiting(): object {
     if (this.Model) {
       return this.Model.constructor(this.getState()).getWaiting();
     }
     else {
       noModelWarning(this.name);
+      return {};
     }
   }
 
-  public isWaiting(prop): boolean | void {
+  public isWaiting(prop): boolean {
     if (this.Model) {
-      return !!this.Model.constructor(this.getState()).isWaiting(prop);
+      return this.Model.constructor(this.getState()).isWaiting(prop);
     }
     else {
       noModelWarning(this.name);
+      return false;
     }
   }
 
-  public isFailed(prop): boolean | void {
+  public isFailed(prop): boolean {
     if (this.Model) {
-      return !!this.Model.constructor(this.getState()).isFailed(prop);
+      return this.Model.constructor(this.getState()).isFailed(prop);
     }
     else {
       noModelWarning(this.name);
+      return false;
     }
   }
 
@@ -111,12 +114,13 @@ export class Controller<T extends Model<object>> {
    * возвращает ошибки
    * @returns {*}
    */
-  public getFailed(): object | void {
+  public getFailed(): object {
     if (this.Model) {
       return this.Model.constructor(this.getState()).getFailed();
     }
     else {
       noModelWarning(this.name);
+      return {};
     }
   }
 }

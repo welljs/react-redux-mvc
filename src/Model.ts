@@ -93,7 +93,7 @@ export class Model<T extends object> {
     return this;
   }
 
-  public update(updates: T): this {
+  public update(updates: Partial<T> | object): this {
     this.set(updates);
     return this;
   }
