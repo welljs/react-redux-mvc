@@ -3,6 +3,9 @@ import { Model } from './Model';
 export interface IControllerActions {
     [name: string]: any;
 }
+interface Constructable<T> {
+    new (state: object): T;
+}
 export declare class Controller<T extends Model<object>> {
     static connectedState: string[];
     static actions: any;
@@ -11,14 +14,15 @@ export declare class Controller<T extends Model<object>> {
     getGlobalState: () => void;
     componentWillReceiveProps(currentProps: T, nextProps: T): void;
     dispatch: <A extends AnyAction>(action: A) => A;
-    Model: Model<object>;
+    Model: Constructable<Model<object>>;
     constructor(Model: any, props: any, context?: any);
-    mappedProps(state: string): object;
+    mappedProps(state: object): object;
     action(...args: any[]): Promise<any>;
     onInit: () => Promise<any>;
-    getState(prop?: string): any;
+    getState: (prop?: string | undefined) => any;
     getWaiting(): object;
     isWaiting(prop: any): boolean;
     isFailed(prop: any): boolean;
     getFailed(): object;
 }
+export {};

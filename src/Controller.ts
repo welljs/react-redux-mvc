@@ -6,6 +6,10 @@ export interface IControllerActions {
   [name: string]: any;
 }
 
+interface Constructable<T> {
+  new(state: object): T;
+}
+
 // Базовый контроллер
 export class Controller<T extends Model<object>> {
   // список полей, которые надо получить из стора.
@@ -18,7 +22,7 @@ export class Controller<T extends Model<object>> {
   public getGlobalState: () => void = () => {};
   public componentWillReceiveProps(currentProps: T, nextProps: T): void {};
   public dispatch: <A extends AnyAction>(action: A) =>A = (action) => {return action};
-  public Model: Model<object>;
+  public Model: Constructable<Model<object>>;
 
   public constructor(Model, props, context?) {
     this.Model = Model;
@@ -82,7 +86,7 @@ export class Controller<T extends Model<object>> {
    */
   public getWaiting(): object {
     if (this.Model) {
-      return this.Model.constructor(this.getState()).getWaiting();
+      return new this.Model(this.getState()).getWaiting();
     }
     else {
       noModelWarning(this.name);
@@ -90,9 +94,9 @@ export class Controller<T extends Model<object>> {
     }
   }
 
-  public isWaiting = (prop): boolean => {
+  public isWaiting(prop): boolean {
     if (this.Model) {
-      return this.Model.constructor(this.getState()).isWaiting(prop);
+      return new this.Model(this.getState()).isWaiting(prop)
     }
     else {
       noModelWarning(this.name);
@@ -102,7 +106,7 @@ export class Controller<T extends Model<object>> {
 
   public isFailed(prop): boolean {
     if (this.Model) {
-      return this.Model.constructor(this.getState()).isFailed(prop);
+      return new this.Model(this.getState()).isFailed(prop);
     }
     else {
       noModelWarning(this.name);
@@ -116,7 +120,7 @@ export class Controller<T extends Model<object>> {
    */
   public getFailed(): object {
     if (this.Model) {
-      return this.Model.constructor(this.getState()).getFailed();
+      return new this.Model(this.getState()).getFailed();
     }
     else {
       noModelWarning(this.name);

@@ -1,4 +1,4 @@
-import {set as _set, isPlainObject, cloneDeep} from 'lodash';
+import {set as _set, isPlainObject, cloneDeep, get as _get} from 'lodash';
 import {merge} from './helpers';
 
 export interface IDefaultState {
@@ -99,7 +99,7 @@ export class Model<T extends object> {
   }
 
   public getState(prop?: string): TState<T> {
-    return this.state;
+    return prop ? _get(this.state, prop) : this.state;
   }
 
   public reset(newState: TState<T>): this {

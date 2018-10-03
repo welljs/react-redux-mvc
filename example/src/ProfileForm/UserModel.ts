@@ -1,4 +1,5 @@
 import * as MVC from '../../../src';
+import {SUBMIT} from './actions';
 
 export interface IUserModelState {
   userData: {
@@ -38,23 +39,23 @@ export default class UserModel extends MVC.Model<IUserModelState> {
   public onSubmitWaiting(): IUserModelState {
     return this
       .update({isSaved: false})
-      // .setWaiting(ASYNC_ACTION_SUBMIT_PROFILE)
-      // .resetFailed(ASYNC_ACTION_SUBMIT_PROFILE)
+      // .setWaiting(SUBMIT)
+      // .resetFailed(SUBMIT)
       .getState();
   }
 
   public onSubmitFailed(errorMsg): IUserModelState {
     return this
       .update({errorMsg})
-      // .setWaiting(ASYNC_ACTION_SUBMIT_PROFILE)
-      // .resetFailed(ASYNC_ACTION_SUBMIT_PROFILE)
+      // .setWaiting(SUBMIT)
+      // .resetFailed(SUBMIT)
       .getState();
   }
 
   public onSubmitComplete(updates): IUserModelState {
     return this
       .update({userData: updates, isSaved: true})
-      // .resetWaiting(ASYNC_ACTION_SUBMIT_PROFILE)
+      // .resetWaiting(SUBMIT)
       .getState();
   }
 }

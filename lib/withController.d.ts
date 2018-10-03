@@ -7,4 +7,4 @@ export interface IWrapperProps extends Model<object> {
 export interface IWrapperState {
     canRender: boolean;
 }
-export declare function withController(Controller?: typeof BasicController.Controller): (Component: any) => any;
+export declare function withController(Controller?: typeof BasicController.Controller): any;
