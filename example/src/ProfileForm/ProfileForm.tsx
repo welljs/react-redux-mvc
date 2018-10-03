@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {withController} from '../../../src';
 import ProfileController from './ProfileController';
-import {STORE_KEY} from './common';
 import {IUserModelState, default as UserModel} from './UserModel';
+import {storeKey} from './actions';
 
 interface IProfileFormProps {
-  [STORE_KEY]: IUserModelState;
+  [storeKey]: IUserModelState;
 }
 
 @withController(ProfileController)
@@ -17,11 +17,11 @@ export class ProfileForm extends Component<IProfileFormProps> {
 
   public onSubmit = (e) => {
     e.preventDefault();
-    this.controller.submit(this.props[STORE_KEY].userData);
+    this.controller.submit(this.props[storeKey].userData);
   };
 
   render() {
-    const {[STORE_KEY]: {userData: {firstName, lastName, age, department, phone, email}, isSaved}} = this.props;
+    const {[storeKey]: {userData: {firstName, lastName, age, department, phone, email}, isSaved}} = this.props;
     const isSubmitWaiting = this.controller.isSubmitWaiting();
     return (
       <div>

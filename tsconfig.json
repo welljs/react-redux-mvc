@@ -9,6 +9,7 @@
     "jsx": "react",
     "moduleResolution": "node",
     "experimentalDecorators": true,
+    "allowJs": false,
     "removeComments": true,
     "outDir": "./_tscache/",
     "declaration": true,

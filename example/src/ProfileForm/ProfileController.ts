@@ -1,27 +1,27 @@
 import * as MVC from '../../../src/';
-import {STORE_KEY, ACTION_UPDATE_PROFILE, ASYNC_ACTION_SUBMIT_PROFILE} from './common';
 import UserModel from './UserModel';
-import {submit, update} from './actions';
+import {update, storeKey, submit, SUBMIT} from './actions';
 
 export default class ProfileController<T extends UserModel> extends MVC.Controller<T> {
-  public static storeKey = STORE_KEY;
+  public storeKey = storeKey;
   public static actions = {};
-  public static connectedState = [STORE_KEY];
+  public static connectedState = [storeKey];
   public static Model = UserModel;
-  public model: T;
+  public model;
 
   public constructor(props, context) {
     super(UserModel, props, context);
+    this.model = new MVC.Model(props[storeKey]);
   }
 
-  public componentWillReceiveProps() {
+  public componentWillReceiveProps(currentProps, nextProps) {
   }
 
-  public updateUserData = (prop, value) => {
+  public updateUserData = (prop, value): void => {
     this.updateProp('userData', {[prop]: value});
   };
 
-  public updateProp = (prop, value) => {
+  public updateProp = (prop, value): void => {
     this.action(update, {[prop]: value});
   };
 
@@ -29,6 +29,5 @@ export default class ProfileController<T extends UserModel> extends MVC.Controll
     this.action(submit, userData);
   };
 
-  public isSubmitWaiting = () => false;
+  public isSubmitWaiting = () => this.isWaiting(SUBMIT);
 }
-// this.isWaiting(ASYNC_ACTION_SUBMIT_PROFILE)

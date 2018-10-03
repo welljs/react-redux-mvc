@@ -12,7 +12,7 @@
   },
   "betterScripts": {
     "example": {
-      "command": "webpack --watch --config example.config.js ",
+      "command": "webpack-dev-server --mode development --hot --progress --color --port 3000 --open --config example.config.js ",
       "env": {
         "NODE_ENV": "dev"
       }

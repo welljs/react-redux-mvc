@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {createStore as reduxCreateStore, applyMiddleware} from 'redux';
+import {createStore as reduxCreateStore, applyMiddleware, compose} from 'redux';
 import {Provider} from 'react-redux';
 import {combine as combineReducers, middleware as requestMiddleware} from 'easy-redux';
 import {ProfileForm} from './ProfileForm';
@@ -19,10 +19,25 @@ function promiseHelper(data) {
   });
 }
 
+export function createStore({data}) {
+  const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const middleWareList = [
+    requestMiddleware(promiseHelper)
+  ];
+  const reducer = combineReducers({});
+  const finalCreateStore = composeEnhancers(applyMiddleware(...middleWareList))(reduxCreateStore);
+  return finalCreateStore(reducer, data);
+}
 
-const appStore = function () {
-  return applyMiddleware(requestMiddleware(promiseHelper))(reduxCreateStore)(combineReducers({}), {});
-}();
+// const appStore = function () {
+//   return applyMiddleware(requestMiddleware(promiseHelper))(reduxCreateStore)(combineReducers({}), {});
+// }();
+
+if (!(window as any).__initialData) {
+  (window as any).__initialData = {};
+}
+
+const appStore = createStore({data: (window as any).__initialData.store || {}});
 
 ReactDOM.render(
   <Provider store={appStore}>

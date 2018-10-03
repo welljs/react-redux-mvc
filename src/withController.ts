@@ -14,25 +14,29 @@ export interface IWrapperState {
   canRender: boolean;
 }
 
-function mapStateToProps(state) {
-  return BasicController.Controller.prototype.mappedProps(state);
+function mapStateToProps(Controller) {
+  return function (state) {
+    return Controller.prototype.mappedProps(state);
+  }
 }
 
-export function withController(Controller = BasicController.Controller) {
+export function withController(Controller = BasicController.Controller): any {
   return Component => {
     class Wrapper extends React.Component<IWrapperProps, IWrapperState> {
       private store;
+
+      static contextTypes = {
+        store: () => {return null}
+      };
+
       public constructor(props: IWrapperProps, context) {
         super(props, context);
         this.state = {
           canRender: false
         };
-        const {store, dispatch} = props;
-        this.store = store || context.store;
+        this.store = props.store || context.store;
         Controller.prototype.name = Component.prototype.constructor.name + 'Controller';
-        if ((this.store && this.store.dispatch) || dispatch) {
-          Controller.prototype.dispatch = this.store && this.store.dispatch ? this.store.dispatch : dispatch;
-        }
+        Controller.prototype.dispatch = this.store.dispatch;
         Controller.prototype.getGlobalState = function (prop) {
           return prop ? this.store.getState()[prop] : this.store.getState();
         }.bind(this);
@@ -47,8 +51,7 @@ export function withController(Controller = BasicController.Controller) {
       }
     }
 
-
-    const connectedWrapper = connect(mapStateToProps)(Wrapper);
+    const connectedWrapper = connect(mapStateToProps(Controller))(Wrapper);
     if (isFunction(Component.prototype.componentWillReceiveProps) && isFunction(Controller.prototype.componentWillReceiveProps)) {
       const fn = Component.prototype.componentWillReceiveProps;
       Component.prototype.componentWillReceiveProps = function (nextPops) {

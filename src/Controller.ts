@@ -20,8 +20,9 @@ export class Controller<T extends Model<object>> {
   public dispatch: <A extends AnyAction>(action: A) =>A = (action) => {return action};
   public Model: Model<object>;
 
-  public constructor(Model, ...props) {
+  public constructor(Model, props, context?) {
     this.Model = Model;
+    this.dispatch = props.dispatch;
   }
 
   /**
@@ -30,8 +31,8 @@ export class Controller<T extends Model<object>> {
    * @param {[String]} state - свойства стора которые надо приконенктить
    * @returns {*}
    */
-  public mappedProps(state: string): object {
-    return Controller.connectedState.reduce((result, prop) => {
+  public mappedProps(state: object): object {
+    return (<typeof Controller>this.constructor).connectedState.reduce((result, prop) => {
       let key: string = prop;
       if (prop.includes(':')) {
         const parts: string[] = prop.split(':');

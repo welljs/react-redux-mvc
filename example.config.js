@@ -35,7 +35,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.(ts|tsx)$/,
+                test: /\.(ts|tsx|js)$/,
                 loader: 'awesome-typescript-loader',
                 exclude: /(node_modules)/,
             },
@@ -45,5 +45,10 @@ module.exports = {
                 loader: 'source-map-loader'
             },
         ]
-    }
+    },
+    devServer: {
+        contentBase: path.resolve(__dirname, `./example`),
+        hot: true,
+        inline: true
+    },
 };

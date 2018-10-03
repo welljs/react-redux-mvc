@@ -12,7 +12,7 @@ export declare class Controller<T extends Model<object>> {
     componentWillReceiveProps(currentProps: T, nextProps: T): void;
     dispatch: <A extends AnyAction>(action: A) => A;
     Model: Model<object>;
-    constructor(Model: any, ...props: any[]);
+    constructor(Model: any, props: any, context?: any);
     mappedProps(state: string): object;
     action(...args: any[]): Promise<any>;
     onInit: () => Promise<any>;
