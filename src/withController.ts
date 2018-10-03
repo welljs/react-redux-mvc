@@ -35,12 +35,12 @@ export function withController(Controller = BasicController.Controller): any {
           canRender: false
         };
         this.store = props.store || context.store;
-        Controller.prototype.name = Component.prototype.constructor.name + 'Controller';
-        Controller.prototype.dispatch = this.store.dispatch;
-        Controller.prototype.getGlobalState = function (prop) {
+        const controller = new Controller(props, context);
+        controller.dispatch = this.store.dispatch;
+        controller.getGlobalState = function (prop) {
           return prop ? this.store.getState()[prop] : this.store.getState();
         }.bind(this);
-        const controller = new Controller(props, context);
+        controller.name = Component.prototype.constructor.name + 'Controller';;
         Component.prototype.controller = controller;
         controller.onInit().then(() => this.setState({canRender: true}));
       }

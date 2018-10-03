@@ -29,5 +29,6 @@ export default class ProfileController<T extends UserModel> extends MVC.Controll
     this.action(submit, userData);
   };
 
-  public isSubmitWaiting = () => this.isWaiting(SUBMIT);
+  // public isSubmitWaiting = () => this.isWaiting(SUBMIT);
+  public isSubmitWaiting = () => false;
 }

@@ -22,7 +22,6 @@ export class Controller<T extends Model<object>> {
 
   public constructor(Model, props, context?) {
     this.Model = Model;
-    this.dispatch = props.dispatch;
   }
 
   /**
@@ -71,7 +70,7 @@ export class Controller<T extends Model<object>> {
    * @param {String} prop
    * @returns {undefined}
    */
-  public getState(prop?: string): any {
+  public getState = (prop?: string): any => {
     if (this.storeKey) {
       return prop ? _get(this.getGlobalState()[this.storeKey], prop) : this.getGlobalState()[this.storeKey];
     }
@@ -91,7 +90,7 @@ export class Controller<T extends Model<object>> {
     }
   }
 
-  public isWaiting(prop): boolean {
+  public isWaiting = (prop): boolean => {
     if (this.Model) {
       return this.Model.constructor(this.getState()).isWaiting(prop);
     }
