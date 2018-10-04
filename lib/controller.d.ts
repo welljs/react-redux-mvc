@@ -10,6 +10,7 @@ export declare class Controller<T extends Model<object>> {
     static connectedState: string[];
     static actions: any;
     storeKey: string;
+    static storeKey: string;
     name: string;
     getGlobalState: () => void;
     componentWillReceiveProps(currentProps: T, nextProps: T): void;

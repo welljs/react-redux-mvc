@@ -1,17 +1,16 @@
-import * as MVC from '../../../src/';
-import UserModel from './UserModel';
-import {update, storeKey, submit, SUBMIT} from './actions';
+import * as MVC from '../../../lib/';
+import {UserModel} from './UserModel';
+import {update, storeKey, submit} from './actions';
+import {SUBMIT_ACTION_NAME} from './common';
 
 export default class ProfileController<T extends UserModel> extends MVC.Controller<T> {
-  public storeKey = storeKey;
+  public static storeKey = storeKey;
   public static actions = {};
   public static connectedState = [storeKey];
   public static Model = UserModel;
-  public model;
 
   public constructor(props, context) {
     super(UserModel, props, context);
-    this.model = new MVC.Model(props[storeKey]);
   }
 
   public componentWillReceiveProps(currentProps, nextProps) {
@@ -29,6 +28,5 @@ export default class ProfileController<T extends UserModel> extends MVC.Controll
     this.action(submit, userData);
   };
 
-  public isSubmitWaiting = () => this.isWaiting(SUBMIT);
-  // public isSubmitWaiting = () => false;
+  public isSubmitWaiting = () => this.isWaiting(SUBMIT_ACTION_NAME);
 }

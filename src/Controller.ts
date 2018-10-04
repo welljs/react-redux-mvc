@@ -1,5 +1,5 @@
 import {get as _get} from 'lodash';
-import {Dispatch, Action, Store, AnyAction} from 'redux';
+import {AnyAction} from 'redux';
 import {Model} from './Model';
 
 export interface IControllerActions {
@@ -18,6 +18,7 @@ export class Controller<T extends Model<object>> {
   // действия которые надо обернуть dispatch-ем
   public static actions: any = {};
   public storeKey: string = '';
+  public static storeKey: string = '';
   public name: string = 'BasicController';
   public getGlobalState: () => void = () => {};
   public componentWillReceiveProps(currentProps: T, nextProps: T): void {};
@@ -26,6 +27,7 @@ export class Controller<T extends Model<object>> {
 
   public constructor(Model, props, context?) {
     this.Model = Model;
+    this.storeKey = (<typeof Controller>this.constructor).storeKey;
   }
 
   /**

@@ -1,5 +1,5 @@
-import * as MVC from '../../../src';
-import {SUBMIT} from './actions';
+import {Model} from '../../../lib';
+import {SUBMIT_ACTION_NAME} from './common';
 
 export interface IUserModelState {
   userData: {
@@ -14,7 +14,7 @@ export interface IUserModelState {
   isSaved: boolean;
 }
 
-export default class UserModel extends MVC.Model<IUserModelState> {
+export class UserModel extends Model<IUserModelState> {
   public static defaults: IUserModelState = {
     userData: {
       firstName: '',
@@ -39,23 +39,23 @@ export default class UserModel extends MVC.Model<IUserModelState> {
   public onSubmitWaiting(): IUserModelState {
     return this
       .update({isSaved: false})
-      // .setWaiting(SUBMIT)
-      // .resetFailed(SUBMIT)
+      .setWaiting(SUBMIT_ACTION_NAME)
+      .resetFailed(SUBMIT_ACTION_NAME)
       .getState();
   }
 
   public onSubmitFailed(errorMsg): IUserModelState {
     return this
       .update({errorMsg})
-      // .setWaiting(SUBMIT)
-      // .resetFailed(SUBMIT)
+      .setWaiting(SUBMIT_ACTION_NAME)
+      .resetFailed(SUBMIT_ACTION_NAME)
       .getState();
   }
 
   public onSubmitComplete(updates): IUserModelState {
     return this
       .update({userData: updates, isSaved: true})
-      // .resetWaiting(SUBMIT)
+      .resetWaiting(SUBMIT_ACTION_NAME)
       .getState();
   }
 }

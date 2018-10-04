@@ -1,9 +1,10 @@
 import {createActions} from 'easy-redux';
-import UserModel from './UserModel';
+import {UserModel} from './UserModel';
+import {SUBMIT_ACTION_NAME, UPDATE_ACTION_NAME} from './common';
 
 export const storeKey = 'user';
-export const SUBMIT = `${storeKey}@@SUBMIT`;
-const UPDATE = `${storeKey}@@UPDATE`;
+export const SUBMIT_ACTION = SUBMIT_ACTION_NAME;
+const UPDATE_ACTION = UPDATE_ACTION_NAME;
 
 const initialState = Object.assign({}, UserModel.defaults);
 
@@ -11,7 +12,7 @@ const actions = createActions({
   storeKey,
   initialState,
   actions: {
-    [SUBMIT]: {
+    [SUBMIT_ACTION]: {
       action: (userData) => ({
         promise: asyncExec => asyncExec(userData)
       }),
@@ -21,12 +22,12 @@ const actions = createActions({
         onSuccess: (state, {result}) => new UserModel(state).onSubmitComplete(result)
       }
     },
-    [UPDATE]: {
+    [UPDATE_ACTION]: {
       action: (updates) => ({updates}),
       handler: (state, {updates}) => new UserModel(state).onUpdate(updates)
     }
   }
 });
 
-export const submit = actions[SUBMIT];
-export const update = actions[UPDATE];
+export const submit = actions[SUBMIT_ACTION];
+export const update = actions[UPDATE_ACTION];

@@ -4,8 +4,8 @@ import {createStore as reduxCreateStore, applyMiddleware, compose} from 'redux';
 import {Provider} from 'react-redux';
 import {combine as combineReducers, middleware as requestMiddleware} from 'easy-redux';
 import {ProfileForm} from './ProfileForm';
-import {ReactReduxMvc} from '../../src';
-import UserModel from './ProfileForm/UserModel';
+import {ReactReduxMvc} from '../../lib';
+import {UserModel} from './ProfileForm/UserModel';
 
 /*
 * in place of this helper can be superagent.js for example, or other asynс function. It is used by middleware to
@@ -28,10 +28,6 @@ export function createStore({data}) {
   const finalCreateStore = composeEnhancers(applyMiddleware(...middleWareList))(reduxCreateStore);
   return finalCreateStore(reducer, data);
 }
-
-// const appStore = function () {
-//   return applyMiddleware(requestMiddleware(promiseHelper))(reduxCreateStore)(combineReducers({}), {});
-// }();
 
 if (!(window as any).__initialData) {
   (window as any).__initialData = {};

@@ -126,5 +126,6 @@ export class Model<T extends object> {
 
   private prepare(data: T): this {
     return this.reset(Object.assign({}, stateDefaults(), data));
+    // return this;
   }
 }

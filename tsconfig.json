@@ -7,13 +7,11 @@
     "sourceMap": true,
     "strictNullChecks": true,
     "jsx": "react",
+    "allowJs": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "allowJs": false,
     "removeComments": true,
-    "outDir": "./_tscache/",
-    "declaration": true,
-    "declarationDir": "./lib"
+    "outDir": "./_tscache/"
   },
   "files": [
     "./node_modules/@types/lodash/get.d.ts"

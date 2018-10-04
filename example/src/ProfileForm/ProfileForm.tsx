@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import {withController} from '../../../src';
+import * as React from 'react';
+import {withController} from '../../../lib';
 import ProfileController from './ProfileController';
-import {IUserModelState, default as UserModel} from './UserModel';
+import {IUserModelState, UserModel} from './UserModel';
 import {storeKey} from './actions';
 
 interface IProfileFormProps {
@@ -9,7 +9,7 @@ interface IProfileFormProps {
 }
 
 @withController(ProfileController)
-export class ProfileForm extends Component<IProfileFormProps> {
+export class ProfileForm extends React.Component<IProfileFormProps> {
   public controller: ProfileController<UserModel>;
 
   public componentWillReceiveProps() {

@@ -1,4 +1,4 @@
-import * as BasicController from './Controller';
+import { Controller as BasicController } from './Controller';
 import { Model } from './Model';
 export interface IWrapperProps extends Model<object> {
     store?: object;
@@ -7,4 +7,4 @@ export interface IWrapperProps extends Model<object> {
 export interface IWrapperState {
     canRender: boolean;
 }
-export declare function withController(Controller?: typeof BasicController.Controller): any;
+export declare function withController(Controller?: typeof BasicController): any;

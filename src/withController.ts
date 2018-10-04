@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import hoistStatics from 'hoist-non-react-statics';
+import * as hoistStatics from 'hoist-non-react-statics';
 import {isFunction} from 'lodash';
-import * as BasicController from './Controller';
+import {Controller as BasicController} from './Controller';
 import {Model} from './Model';
 
 export interface IWrapperProps extends Model<object> {
@@ -20,7 +20,7 @@ function mapStateToProps(Controller) {
   }
 }
 
-export function withController(Controller = BasicController.Controller): any {
+export function withController(Controller = BasicController): any {
   return Component => {
     class Wrapper extends React.Component<IWrapperProps, IWrapperState> {
       private store;
