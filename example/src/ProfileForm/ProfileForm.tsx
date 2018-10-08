@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {withController} from '../../../lib';
+import * as MVC from '../../../src';
 import ProfileController from './ProfileController';
 import {IUserModelState, UserModel} from './UserModel';
 import {storeKey} from './actions';
@@ -8,7 +8,7 @@ interface IProfileFormProps {
   [storeKey]: IUserModelState;
 }
 
-@withController(ProfileController)
+@MVC.withController(ProfileController)
 export class ProfileForm extends React.Component<IProfileFormProps> {
   public controller: ProfileController<UserModel>;
 
@@ -51,7 +51,7 @@ export class ProfileForm extends React.Component<IProfileFormProps> {
             <input type="text" value={lastName}
                    onChange={e => this.controller.updateUserData('lastName', e.target.value)}
                    placeholder="Last name"/><br/>
-            <input type="text" value={age || 0} onChange={e => this.controller.updateUserData('age', e.target.value)}
+            <input type="text" value={age || undefined} onChange={e => this.controller.updateUserData('age', e.target.value)}
                    placeholder="Age"/><br/>
             <input type="text" value={email} onChange={e => this.controller.updateUserData('email', e.target.value)}
                    placeholder="Email"/><br/>

@@ -1,4 +1,4 @@
-import * as MVC from '../../../lib/';
+import * as MVC from '../../../src/';
 import {UserModel} from './UserModel';
 import {update, storeKey, submit} from './actions';
 import {SUBMIT_ACTION_NAME} from './common';

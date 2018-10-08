@@ -35,11 +35,11 @@ export class Collection<T extends IModelData> {
   }
 
   public find(prop: string, value: any): Model<T> | undefined {
-    return this.models.find(model => model.getState().equals(prop, value));
+    return this.models.find(model => model.equals(prop, value));
   }
 
   public filter(prop: string, value: any): Model<T>[] {
-    return this.models.filter(model => model.getState().equals(prop, value));
+    return this.models.filter(model => model.equals(prop, value));
   }
 
   /**
@@ -48,7 +48,7 @@ export class Collection<T extends IModelData> {
    * @param {String} value
    * @returns {Model}
    */
-  public findIncludes(prop: string, value: any): Model<T> | undefined {
+  public findIncludes(prop: string, value: string): Model<T> | undefined {
     return this.models.find(model => model.includes(prop, value));
   }
 

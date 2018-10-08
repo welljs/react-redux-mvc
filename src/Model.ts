@@ -114,7 +114,7 @@ export class Model<T extends object> {
   public includes(prop: string, value: string, caseSensitive?: boolean): boolean {
     const currentValue = this.getState(prop);
     if (typeof currentValue !== 'string' && !(currentValue instanceof String) ) {
-      throw Error('value should be a string type');
+      return false;
     }
     if (caseSensitive) {
       return !!~currentValue.indexOf(value);

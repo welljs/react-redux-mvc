@@ -2,7 +2,7 @@ const webpack = require('webpack');
 
 module.exports = {
   transform: {
-    '.(ts|tsx)': '<rootDir>/node_modules/ts-jest/preprocessor.js',
+    '.(ts|tsx)': 'ts-jest',
   },
   collectCoverage: true,
   testRegex: '(/__tests__/.*!(e2e)|(\\.|/)(test|spec))\\.(tsx?)$',

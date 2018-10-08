@@ -1,4 +1,4 @@
-import {Model} from '../../../lib';
+import * as MVC from '../../../src';
 import {SUBMIT_ACTION_NAME} from './common';
 
 export interface IUserModelState {
@@ -14,7 +14,7 @@ export interface IUserModelState {
   isSaved: boolean;
 }
 
-export class UserModel extends Model<IUserModelState> {
+export class UserModel extends MVC.Model<IUserModelState> {
   public static defaults: IUserModelState = {
     userData: {
       firstName: '',

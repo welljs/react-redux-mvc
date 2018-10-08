@@ -26,7 +26,9 @@ export function withController(Controller = BasicController): any {
       private store;
 
       static contextTypes = {
-        store: () => {return null}
+        store: () => {
+          return null
+        }
       };
 
       public constructor(props: IWrapperProps, context) {
@@ -40,7 +42,7 @@ export function withController(Controller = BasicController): any {
         controller.getGlobalState = function (prop) {
           return prop ? this.store.getState()[prop] : this.store.getState();
         }.bind(this);
-        controller.name = Component.prototype.constructor.name + 'Controller';;
+        controller.name = Component.prototype.constructor.name + 'Controller';
         Component.prototype.controller = controller;
         controller.onInit().then(() => this.setState({canRender: true}));
       }
@@ -52,13 +54,13 @@ export function withController(Controller = BasicController): any {
     }
 
     const connectedWrapper = connect(mapStateToProps(Controller))(Wrapper);
-    if (isFunction(Component.prototype.componentWillReceiveProps) && isFunction(Controller.prototype.componentWillReceiveProps)) {
-      const fn = Component.prototype.componentWillReceiveProps;
-      Component.prototype.componentWillReceiveProps = function (nextPops) {
-        Controller.prototype.componentWillReceiveProps.call(Component.prototype.controller, this.props, nextPops);
-        fn.call(this, nextPops);
-      };
-    }
+    const fn = Component.prototype.componentWillReceiveProps;
+    Component.prototype.componentWillReceiveProps = function (nextPops) {
+      Controller.prototype.componentWillReceiveProps.call(Component.prototype.controller, this.props, nextPops);
+      if (isFunction(fn)) {
+        fn.call(this, nextPops)
+      }
+    };
     return hoistStatics(connectedWrapper, Component);
   };
 }
