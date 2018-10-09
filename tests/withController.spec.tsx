@@ -1,4 +1,4 @@
-import {Controller, Model, withController} from '../src';
+import {Controller, withController} from '../src';
 import * as React from 'react';
 import {createStore} from '../example/src/utils';
 import {shallow, mount, render} from 'enzyme';
@@ -7,29 +7,22 @@ import * as Enzyme from 'enzyme';
 
 Enzyme.configure({adapter: new Adapter()});
 
-describe('Controller', () => {
-  const testKey = 'testKey';
-  const testModelData = {
-    [testKey]: true,
-  };
-  const testModel = new Model(testModelData);
-  const testController = new Controller(testModel, {some: true});
-
-  @withController(Controller)
+describe('withController', () => {
   class TestView extends React.Component<any> {
     public render() {
       return <div>123</div>;
     }
-
-    public test = () => {
-      return 123;
-    }
   }
 
-  it('', () => {
-    const appStore = createStore({data: {}});
-    const mountedComponent = mount(<TestView store={appStore}/>);
-    // const instance = mountedComponent.find('Wrapper').instance();
-    // console.log(instance._reactInternalFiber.child);
+  it('it should render view', (done) => {
+    const Component = withController(Controller)(TestView);
+    const appStore = createStore({data: {some: true}});
+    const mountedComponent = mount(<Component store={appStore}/>);
+    setTimeout(() => {
+      mountedComponent.update();
+      const instance = mountedComponent.find('Wrapper');
+      expect(instance.find('TestView').length).toEqual(1);
+      done()
+    }, 1)
   })
 });

@@ -12,9 +12,6 @@ interface IProfileFormProps {
 export class ProfileForm extends React.Component<IProfileFormProps> {
   public controller: ProfileController<UserModel>;
 
-  public componentWillReceiveProps() {
-  };
-
   public onSubmit = (e) => {
     e.preventDefault();
     this.controller.submit(this.props[storeKey].userData);
