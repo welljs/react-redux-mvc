@@ -17,19 +17,16 @@ export interface IWrapperState {
 function mapStateToProps(Controller) {
   return function (state) {
     return Controller.prototype.mappedProps(state);
-  }
+  };
 }
 
 export function withController(Controller = BasicController): any {
   return Component => {
     class Wrapper extends React.Component<IWrapperProps, IWrapperState> {
-      private store;
-
-      static contextTypes = {
-        store: () => {
-          return null
-        }
+      public static contextTypes = {
+        store: () => null
       };
+      private store;
 
       public constructor(props: IWrapperProps, context) {
         super(props, context);
@@ -58,7 +55,7 @@ export function withController(Controller = BasicController): any {
     Component.prototype.componentWillReceiveProps = function (nextPops) {
       Controller.prototype.componentWillReceiveProps.call(Component.prototype.controller, this.props, nextPops);
       if (isFunction(fn)) {
-        fn.call(this, nextPops)
+        fn.call(this, nextPops);
       }
     };
     return hoistStatics(connectedWrapper, Component);

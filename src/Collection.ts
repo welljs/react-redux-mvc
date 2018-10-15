@@ -6,7 +6,7 @@ interface IModelData {
 }
 
 export class Collection<T extends IModelData> {
-  public models: Model<T>[]  = [];
+  public models: Array<Model<T>> = [];
 
   public constructor(items: T[] = [], options: IDefaultModelOptions = {}) {
     this._prepare(items, options);
@@ -22,7 +22,7 @@ export class Collection<T extends IModelData> {
    * возвращает массив со стейтами моделей
    * @returns {*}
    */
-  public getState(): TState<T>[] {
+  public getState(): Array<TState<T>> {
     return this.models.map((model) => model.getState());
   }
 
@@ -38,7 +38,7 @@ export class Collection<T extends IModelData> {
     return this.models.find(model => model.equals(prop, value));
   }
 
-  public filter(prop: string, value: any): Model<T>[] {
+  public filter(prop: string, value: any): Array<Model<T>> {
     return this.models.filter(model => model.equals(prop, value));
   }
 
@@ -58,7 +58,7 @@ export class Collection<T extends IModelData> {
    * @param {String} value
    * @returns {Array <Model>}
    */
-  public filterIncludes(prop: string, value: any): Model<T>[] {
+  public filterIncludes(prop: string, value: any): Array<Model<T>> {
     return this.models.filter(model => model.includes(prop, value));
   }
 
@@ -76,7 +76,7 @@ export class Collection<T extends IModelData> {
     return this;
   }
 
-  public reverse(): Model<T>[] {
+  public reverse(): Array<Model<T>> {
     return this.models.reverse();
   }
 

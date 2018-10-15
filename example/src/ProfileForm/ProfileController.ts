@@ -13,20 +13,17 @@ export default class ProfileController<T extends UserModel> extends MVC.Controll
     super(UserModel, props, context);
   }
 
-  public componentWillReceiveProps(currentProps, nextProps) {
+  public updateUserData = (prop) => (e): void => {
+    this.updateProp('userData', {[prop]: e.target.value})();
   }
 
-  public updateUserData = (prop, value): void => {
-    this.updateProp('userData', {[prop]: value});
-  };
-
-  public updateProp = (prop, value): void => {
+  public updateProp = (prop, value) => (): void => {
     this.action(update, {[prop]: value});
-  };
+  }
 
   public submit = (userData) => {
     this.action(submit, userData);
-  };
+  }
 
   public isSubmitWaiting = () => this.isWaiting(SUBMIT_ACTION_NAME);
 }

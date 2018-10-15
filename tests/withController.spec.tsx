@@ -22,7 +22,7 @@ describe('withController', () => {
       mountedComponent.update();
       const instance = mountedComponent.find('Wrapper');
       expect(instance.find('TestView').length).toEqual(1);
-      done()
-    }, 1)
-  })
+      done();
+    }, 1);
+  });
 });

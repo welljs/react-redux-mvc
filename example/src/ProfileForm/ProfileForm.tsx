@@ -15,9 +15,9 @@ export class ProfileForm extends React.Component<IProfileFormProps> {
   public onSubmit = (e) => {
     e.preventDefault();
     this.controller.submit(this.props[storeKey].userData);
-  };
+  }
 
-  render() {
+  public render() {
     const {[storeKey]: {userData: {firstName, lastName, age, department, phone, email}, isSaved}} = this.props;
     const isSubmitWaiting = this.controller.isSubmitWaiting();
     return (
@@ -34,7 +34,7 @@ export class ProfileForm extends React.Component<IProfileFormProps> {
                 <li>{email}</li>
                 <li>{department}</li>
               </ul>
-              <button onClick={e => this.controller.updateProp('isSaved', false)}>Edit</button>
+              <button onClick={this.controller.updateProp('isSaved', false)}>Edit</button>
             </div>
           )
 
@@ -42,21 +42,48 @@ export class ProfileForm extends React.Component<IProfileFormProps> {
         {
           !isSaved &&
           <form onSubmit={this.onSubmit}>
-            <input type="text" value={firstName}
-                   onChange={e => this.controller.updateUserData('firstName', e.target.value)}
-                   placeholder="First name"/><br/>
-            <input type="text" value={lastName}
-                   onChange={e => this.controller.updateUserData('lastName', e.target.value)}
-                   placeholder="Last name"/><br/>
-            <input type="text" value={age || undefined} onChange={e => this.controller.updateUserData('age', e.target.value)}
-                   placeholder="Age"/><br/>
-            <input type="text" value={email} onChange={e => this.controller.updateUserData('email', e.target.value)}
-                   placeholder="Email"/><br/>
-            <input type="text" value={phone} onChange={e => this.controller.updateUserData('phone', e.target.value)}
-                   placeholder="Phone"/><br/>
-            <input type="text" value={department}
-                   onChange={e => this.controller.updateUserData('department', e.target.value)}
-                   placeholder="Department"/><br/>
+            <input
+              type="text"
+              value={firstName}
+              onChange={this.controller.updateUserData('firstName')}
+              placeholder="First name"
+            />
+            <br/>
+            <input
+              type="text"
+              value={lastName}
+              onChange={this.controller.updateUserData('lastName')}
+              placeholder="Last name"
+            />
+            <br/>
+            <input
+              type="text"
+              value={age || ''}
+              onChange={this.controller.updateUserData('age')}
+              placeholder="Age"
+            />
+            <br/>
+            <input
+              type="text"
+              value={email}
+              onChange={this.controller.updateUserData('email')}
+              placeholder="Email"
+            />
+            <br/>
+            <input
+              type="text"
+              value={phone}
+              onChange={this.controller.updateUserData('phone')}
+              placeholder="Phone"
+            />
+            <br/>
+            <input
+              type="text"
+              value={department}
+              onChange={this.controller.updateUserData('department')}
+              placeholder="Department"
+            />
+            <br/>
             <input type="submit" value={isSubmitWaiting ? 'Saving...' : 'Save'} disabled={isSubmitWaiting}/>
           </form>
         }
@@ -64,5 +91,3 @@ export class ProfileForm extends React.Component<IProfileFormProps> {
     );
   }
 }
-
-

@@ -10,9 +10,9 @@ export interface IChildContextProps {
 }
 
 export class ReactReduxMvc extends React.Component<IReactReduxMVCProps, {}> {
-  static childContextTypes: IChildContextProps = {
-    store: () => {return null}
-  }
+  public static childContextTypes: IChildContextProps = {
+    store: () => null
+  };
 
   private store: object;
 

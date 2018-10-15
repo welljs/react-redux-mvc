@@ -18,7 +18,7 @@ export function createStore({data}) {
 function promiseHelper(data) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve(data)
+      resolve(data);
     }, 3000);
   });
 }

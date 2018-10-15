@@ -17,18 +17,19 @@ export class Controller<T extends Model<object>> {
   public static connectedState: string[] = [];
   // действия которые надо обернуть dispatch-ем
   public static actions: any = {};
-  public storeKey: string = '';
   public static storeKey: string = '';
-  public name: string = 'BasicController';
-  public getGlobalState: () => void = () => {};
-  public componentWillReceiveProps(currentProps: T, nextProps: T): void {};
-  public dispatch: <A extends AnyAction>(action: A) =>A = (action) => {return action};
   public Model: Constructable<Model<object>>;
+  public storeKey: string = '';
+  public name: string = 'BasicController';
 
   public constructor(Model, props, context?) {
     this.Model = Model;
-    this.storeKey = (<typeof Controller>this.constructor).storeKey;
+    this.storeKey = (<typeof Controller> this.constructor).storeKey;
   }
+
+  public getGlobalState: () => void = () => {};
+  public componentWillReceiveProps(): void {}
+  public dispatch: <A extends AnyAction>(action: A) => A = (action) => action;
 
   /**
    * используется для коннекта к стору
@@ -37,7 +38,7 @@ export class Controller<T extends Model<object>> {
    * @returns {*}
    */
   public mappedProps(state: object): object {
-    return (<typeof Controller>this.constructor).connectedState.reduce((result, prop) => {
+    return (<typeof Controller> this.constructor).connectedState.reduce((result, prop) => {
       let key: string = prop;
       if (prop.includes(':')) {
         const parts: string[] = prop.split(':');
@@ -98,7 +99,7 @@ export class Controller<T extends Model<object>> {
 
   public isWaiting(prop): boolean {
     if (this.Model) {
-      return new this.Model(this.getState()).isWaiting(prop)
+      return new this.Model(this.getState()).isWaiting(prop);
     }
     else {
       noModelWarning(this.name);
