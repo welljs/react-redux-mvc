@@ -5,43 +5,50 @@ const path = require('path');
 const useSources = false;
 
 const resolve = {
-    root: path.resolve(__dirname),
     alias: {},
-    extensions: ['', '.js', '.jsx'],
-    modulesDirectories: [ 'node_modules']
-
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
 };
 const include = [];
 
 if (useSources) {
-    resolve.alias['react-redux-mvc'] = path.join(__dirname, './src/index.js');
+    resolve.alias['react-redux-mvc'] = path.join(__dirname, './src/index.ts');
     include.push(path.resolve(__dirname, `./example/src`));
     include.push(path.resolve(__dirname, `./src`));
     console.log(`\n> compile using sources...\n`);
 }
 else {
-    resolve.alias['react-redux-mvc'] = path.join(__dirname, './lib/index.js');
+    resolve.alias['react-redux-mvc'] = path.join(__dirname, './lib/index.ts');
     include.push(path.resolve(__dirname, `./example/src`));
     include.push(path.resolve(__dirname, `./lib`));
     console.log('\n> compile using production lib...\n');
 }
 
 module.exports = {
-    context: path.join(__dirname,'./'),
+    context: path.join(__dirname, './'),
     devtool: 'source-map',
-    entry: './example/src/app.js',
+    entry: './example/src/app.tsx',
     output: {
-        path: './example',
+        path: path.resolve(__dirname, `./example`),
         filename: 'example.js'
     },
     resolve,
     module: {
-        loaders: [
+        rules: [
             {
-                test: /\.js/,
-                loaders: ['babel-loader?cacheDirectory'],
-                include,
-            }
+                test: /\.(ts|tsx|js)$/,
+                loader: 'awesome-typescript-loader',
+                exclude: /(node_modules)/,
+            },
+            {
+                enforce: 'pre',
+                test: /\.js$/,
+                loader: 'source-map-loader'
+            },
         ]
-    }
+    },
+    devServer: {
+        contentBase: path.resolve(__dirname, `./example`),
+        hot: true,
+        inline: true
+    },
 };

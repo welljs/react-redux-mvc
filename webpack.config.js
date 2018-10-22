@@ -3,20 +3,26 @@ const path = require('path');
 
 module.exports = {
     context: path.join(__dirname, './src'),
-    entry: './index.js',
+    entry: './index.ts',
     output: {
-        path: './lib',
+        path: path.resolve(__dirname, 'lib'),
         filename: 'index.js'
     },
+    resolve: {
+        extensions: ['.js', '.json', '.ts', '.tsx'],
+    },
     module: {
-        loaders: [
+        rules: [
             {
-                test: /\.js/,
-                loaders: 'babel-loader',
-                include: [
-                    path.resolve(__dirname, `./src`)
-                ]
-            }
+                test: /\.(ts|tsx)$/,
+                loader: 'awesome-typescript-loader',
+                exclude: /(node_modules)/,
+            },
+            {
+                enforce: 'pre',
+                test: /\.js$/,
+                loader: 'source-map-loader'
+            },
         ]
     }
 };

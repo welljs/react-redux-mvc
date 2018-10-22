@@ -1,22 +1,55 @@
 {
-  "extends": ["tslint:recommended", "tslint-react"],
+  "extends": [
+    "tslint:recommended",
+    "tslint-react"
+  ],
   "rules": {
+    "indent": [
+      true,
+      "spaces",
+      2
+    ],
     "object-literal-sort-keys": false,
-    "only-arrow-functions": [false],
-    "ordered-imports": [false],
+    "space-before-function-paren": false,
+    "no-bitwise": false,
+    "only-arrow-functions": [
+      false
+    ],
+    "ordered-imports": [
+      false
+    ],
     "no-namespace": false,
     "no-string-literal": false,
     "no-shadowed-variable": false,
     "jsx-no-multiline-js": false,
-    "max-classes-per-file": [true, 3],
-    "max-line-length": [120],
-    "one-line": [true],
-    "triple-equals": false,
-    "no-bitwise": false,
-    "quotemark": [true, "single", "jsx-double"],
-    "interface-name": [false], // due to official Coding guidelines https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines
-    "no-console": [true, "warn", "debug", "table"],
-    "trailing-comma": [false],
+    "max-classes-per-file": [
+      true,
+      2
+    ],
+    "max-line-length": [
+      120
+    ],
+    "one-line": [
+      true
+    ],
+    "quotemark": [
+      true,
+      "single",
+      "jsx-double"
+    ],
+    "interface-name": [
+      false
+    ],
+    // due to official Coding guidelines https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines
+    "no-console": [
+      true,
+      "warn",
+      "debug",
+      "table"
+    ],
+    "trailing-comma": [
+      false
+    ],
     "arrow-parens": false,
     "whitespace": [
       true,
