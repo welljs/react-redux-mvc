@@ -1,14 +1,14 @@
 import {mergeWith, isArray} from 'lodash';
 
 export function merge(dst, src) {
-  // чтобы не мержить массиы, возвращается исходный
+  // To prevent merging arrays, return initial
   if (isArray(dst) && isArray(src)) {
     return src;
   }
   else {
     return {
       ...mergeWith(dst, src, (objValue, srcValue) => {
-        // чтобы не мержить массиы, возвращается исходный
+        // To prevent merging arrays, return initial
         if (isArray(objValue)) {
           return srcValue;
         }

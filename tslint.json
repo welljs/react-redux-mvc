@@ -12,6 +12,8 @@
     "object-literal-sort-keys": false,
     "space-before-function-paren": false,
     "no-bitwise": false,
+    "no-angle-bracket-type-assertion": false,
+    "triple-equals": false,
     "only-arrow-functions": [
       false
     ],
