@@ -7,18 +7,12 @@
   "scripts": {
     "test": "jest",
     "example": "better-npm-run example",
-    "build": "rm -rf lib && tsc",
+    "build": "tslint --project tsconfig.json && rm -rf lib && tsc",
     "lint": "tslint --project tsconfig.json"
   },
   "betterScripts": {
     "example": {
       "command": "webpack-dev-server --mode development --hot --progress --color --port 3000 --open --config example.config.js ",
-      "env": {
-        "NODE_ENV": "dev"
-      }
-    },
-    "build": {
-      "command": "webpack --color --display-error-details --display-modules --mode production",
       "env": {
         "NODE_ENV": "dev"
       }

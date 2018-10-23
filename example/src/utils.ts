@@ -1,12 +1,18 @@
 import {applyMiddleware, compose, createStore as reduxCreateStore} from 'redux';
 import {combine as combineReducers, middleware as requestMiddleware} from 'easy-redux';
 
+const initialState = {};
+
+const some = (state = initialState) => {
+  return state;
+};
+
 export function createStore({data}) {
   const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   const middleWareList = [
     requestMiddleware(promiseHelper)
   ];
-  const reducer = combineReducers({});
+  const reducer = combineReducers({some});
   const finalCreateStore = composeEnhancers(applyMiddleware(...middleWareList))(reduxCreateStore);
   return finalCreateStore(reducer, data);
 }

@@ -10,12 +10,12 @@ interface Constructable<T> {
   new(state: object): T;
 }
 
-// Базовый контроллер
+// Basic controller
 export class Controller<T extends Model<object>> {
-  // список полей, которые надо получить из стора.
-  // чтобы получить вложенные, надо указать их через точку: routing.location
+  // List of fields to get from global store
+  // To get nested properties, it is necessary to specify them through a dot: routing.location
   public static connectedState: string[] = [];
-  // действия которые надо обернуть dispatch-ем
+  // actions that need to be wrapped by dispatcher
   public static actions: any = {};
   public static storeKey: string = '';
   public Model: Constructable<Model<object>>;
@@ -32,10 +32,9 @@ export class Controller<T extends Model<object>> {
   public dispatch: <A extends AnyAction>(action: A) => A = (action) => action;
 
   /**
-   * используется для коннекта к стору
-   * @example ['currentContract', 'routing.location:location']
-   * @param {[String]} state - свойства стора которые надо приконенктить
-   * @returns {*}
+   * Use to connect to global store
+   * @param {object} state - store properties that need to be connected
+   * @returns {object}
    */
   public mappedProps(state: object): object {
     return (<typeof Controller> this.constructor).connectedState.reduce((result, prop) => {
@@ -50,8 +49,9 @@ export class Controller<T extends Model<object>> {
   }
 
   /**
-   * диспатчит действие
+   * dispatches actions
    * @param args
+   * @returns {Promise<any>}
    */
   public action(...args): Promise<any> {
     const [name, ...restArguments] = args;
@@ -66,16 +66,16 @@ export class Controller<T extends Model<object>> {
   }
 
   /**
-   * запсускается при инициализации, для первоначальных загрузок.
-   * ! Пока не выполнится, не происходит первый рендер
+   * Starts with initialization for initial loading
+   * ! Until it is done, the first render does not start
+   * @returns {Promise<any>}
    */
   public onInit = (): Promise<any> => Promise.resolve();
 
   /**
-   * Возвращает connected state. Может быть вложенным.
-   * @example getState('routing'); getState('routing.location')
-   * @param {String} prop
-   * @returns {undefined}
+   * Return connected state. Can be nested
+   * @param {string} prop
+   * @returns {any}
    */
   public getState = (prop?: string): any => {
     if (this.storeKey) {
@@ -84,8 +84,8 @@ export class Controller<T extends Model<object>> {
   }
 
   /**
-   * возвращает ожидающие
-   * @returns {*}
+   * Return waiting
+   * @returns {object}
    */
   public getWaiting(): object {
     if (this.Model) {
@@ -97,6 +97,11 @@ export class Controller<T extends Model<object>> {
     }
   }
 
+  /**
+   * Return is this prop in waiting
+   * @param prop
+   * @returns {boolean}
+   */
   public isWaiting(prop): boolean {
     if (this.Model) {
       return new this.Model(this.getState()).isWaiting(prop);
@@ -107,6 +112,11 @@ export class Controller<T extends Model<object>> {
     }
   }
 
+  /**
+   * Return is this prop is failed
+   * @param prop
+   * @returns {boolean}
+   */
   public isFailed(prop): boolean {
     if (this.Model) {
       return new this.Model(this.getState()).isFailed(prop);
@@ -118,8 +128,8 @@ export class Controller<T extends Model<object>> {
   }
 
   /**
-   * возвращает ошибки
-   * @returns {*}
+   * Return failed
+   * @returns {object}
    */
   public getFailed(): object {
     if (this.Model) {
