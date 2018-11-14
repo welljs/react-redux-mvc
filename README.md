@@ -4,7 +4,7 @@ Implementation of MVC pattrern based on React-Redux bunch keeping one direction 
 
 ![alt tag](https://github.com/welljs/react-redux-mvc/blob/master/mvc-scheme.png)
 
-index.js (entry point of application)
+index.ts (entry point of application)
 
 ```javascript
 import React from 'react';
