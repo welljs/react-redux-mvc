@@ -1,7 +1,9 @@
 import {Controller, Model} from '../src';
 
 describe('Controller', () => {
-  const controller = new Controller(Model, {});
+  // TS hack to have access to private methods and props
+  let controller;
+  controller = new Controller(Model, {});
   const dispatch = jest.fn();
   const getGlobalState = () => {
     return ({[controller.storeKey]: 'test'});

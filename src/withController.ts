@@ -13,7 +13,6 @@ export interface IWrapperProps extends Model<object> {
 export interface IWrapperState {
   canRender: boolean;
 }
-
 function mapStateToProps(Controller) {
   return function (state) {
     return Controller.prototype.mappedProps(state);
@@ -26,20 +25,24 @@ export function withController(Controller = BasicController): any {
       public static contextTypes = {
         store: () => null
       };
+
+      public state = {
+        canRender: false
+      };
+
       private store;
 
-      public constructor(props: IWrapperProps, context) {
+      constructor (props, context) {
         super(props, context);
-        this.state = {
-          canRender: false
-        };
         this.store = props.store || context.store;
-        const controller = new Controller(props, context);
-        controller.dispatch = this.store.dispatch;
-        controller.getGlobalState = function (prop) {
+        Controller.prototype.name = Component.prototype.constructor.name + 'Controller';
+        Controller.prototype.dispatch = this.store.dispatch;
+
+        Controller.prototype.getGlobalState = function (prop) {
           return prop ? this.store.getState()[prop] : this.store.getState();
         }.bind(this);
-        controller.name = Component.prototype.constructor.name + 'Controller';
+
+        const controller = new Controller(props, context);
         Component.prototype.controller = controller;
         controller.onInit().then(() => this.setState({canRender: true}));
       }

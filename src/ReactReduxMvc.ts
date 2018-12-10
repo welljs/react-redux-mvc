@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { object, element } from 'prop-types';
 
 export interface IReactReduxMVCProps {
   children: JSX.Element;
@@ -14,12 +15,16 @@ export class ReactReduxMvc extends React.Component<IReactReduxMVCProps, {}> {
     store: () => null
   };
 
+  public static propTypes = {
+    children: element.isRequired,
+    store: object.isRequired
+  };
+
   private store: object;
 
   public constructor(props: IReactReduxMVCProps, context) {
     super(props, context);
-    const {store} = props;
-    this.store = store;
+    this.store = props.store;
   }
 
   public getChildContext(): IChildContextProps {
@@ -29,7 +34,6 @@ export class ReactReduxMvc extends React.Component<IReactReduxMVCProps, {}> {
   }
 
   public render() {
-    const {children} = this.props;
-    return React.Children.only(children);
+    return React.Children.only(this.props.children);
   }
 }

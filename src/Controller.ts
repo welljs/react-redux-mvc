@@ -2,34 +2,41 @@ import {get as _get} from 'lodash';
 import {AnyAction} from 'redux';
 import {Model} from './Model';
 
-export interface IControllerActions {
-  [name: string]: any;
-}
-
 interface Constructable<T> {
   new(state: object): T;
 }
 
+type TAsyncAction = Promise<any>;
+type TAction<Action> = TAsyncAction | Action;
+
+interface IActions {
+  [key: string]: TAction<AnyAction>;
+}
+
 // Basic controller
 export class Controller<T extends Model<object>> {
+  // propsType bind to connected component
+  public static propsTypes = {};
   // List of fields to get from global store
   // To get nested properties, it is necessary to specify them through a dot: routing.location
   public static connectedState: string[] = [];
   // actions that need to be wrapped by dispatcher
-  public static actions: any = {};
+  public static actions: IActions = {};
   public static storeKey: string = '';
+  public getGlobalState: () => void;
+  public dispatch: <Action extends AnyAction>(action: Action) => TAction<Action>;
   public Model: Constructable<Model<object>>;
-  public storeKey: string = '';
-  public name: string = 'BasicController';
+  public name: string;
+  public readonly storeKey: string = '';
+  private readonly actions: IActions = {};
 
   public constructor(Model, props, context?) {
     this.Model = Model;
-    this.storeKey = (<typeof Controller> this.constructor).storeKey;
+    this.storeKey = (this.constructor as typeof Controller).storeKey;
+    this.actions = (this.constructor as typeof Controller).actions;
   }
 
-  public getGlobalState: () => void = () => {};
-  public componentWillReceiveProps(): void {}
-  public dispatch: <A extends AnyAction>(action: A) => A = (action) => action;
+  public componentWillReceiveProps(currentProps, nextProps): void {}
 
   /**
    * Use to connect to global store
@@ -37,7 +44,7 @@ export class Controller<T extends Model<object>> {
    * @returns {object}
    */
   public mappedProps(state: object): object {
-    return (<typeof Controller> this.constructor).connectedState.reduce((result, prop) => {
+    return (this.constructor as typeof Controller).connectedState.reduce((result, prop: string) => {
       let key: string = prop;
       if (prop.includes(':')) {
         const parts: string[] = prop.split(':');
@@ -50,19 +57,19 @@ export class Controller<T extends Model<object>> {
 
   /**
    * dispatches actions
+   * @param name
    * @param args
-   * @returns {Promise<any>}
+   * @returns TDispatchReturn<AnyAction>
    */
-  public action(...args): Promise<any> {
-    const [name, ...restArguments] = args;
+  public action<Args extends any[]>(name, ...args: Args): TAction<AnyAction> {
     if (typeof name === 'function') {
-      return this.dispatch(name.apply(undefined, restArguments));
+      return this.dispatch(name.apply(undefined, args));
     }
-    const action = Controller.actions[name];
+    const action = this.actions[name];
     if (typeof action !== 'function') {
       throw Error('Action must be a function');
     }
-    return this.dispatch(action.apply(undefined, restArguments));
+    return this.dispatch((action as AnyAction).apply(undefined, args));
   }
 
   /**
@@ -145,3 +152,13 @@ export class Controller<T extends Model<object>> {
 function noModelWarning(controllerName: string): void {
   throw new Error(`There is Model provided to ${controllerName}`);
 }
+
+Controller.prototype.name = 'BasicController';
+// withController must pass here real dispatcher
+Controller.prototype.dispatch = function (action) {
+  return action;
+};
+Controller.prototype.getGlobalState = function () {
+};
+Controller.prototype.componentWillReceiveProps = function () {
+};

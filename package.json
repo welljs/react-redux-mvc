@@ -1,9 +1,9 @@
 {
   "name": "react-redux-mvc",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Implementation of MVC pattern based on React-Redux bunch",
   "main": "lib/index.js",
-  "types": "types/index.d.ts",
+  "types": "lib/types/index.d.ts",
   "scripts": {
     "test": "jest",
     "example": "better-npm-run example",
@@ -51,19 +51,22 @@
     "tslint": "5.11.0",
     "tslint-loader": "3.6.0",
     "tslint-react": "3.6.0",
-    "typescript": "3.0.3",
+    "typescript": "3.1.5",
     "webpack": "4.20.2",
     "webpack-cli": "3.1.2",
     "webpack-dev-server": "3.1.9"
   },
   "dependencies": {
+    "@types/enzyme": "^3.1.15",
     "@types/redux-actions": "2.3.0",
     "hoist-non-react-statics": "3.0.1",
-    "easy-redux": "2.0.1",
     "lodash": "4.17.11",
     "react": "16.5.2",
     "react-dom": "16.5.2",
     "react-redux": "5.0.7",
     "redux": "4.0.0"
+  },
+  "peerDependencies": {
+    "easy-redux": "2.0.1"
   }
 }
