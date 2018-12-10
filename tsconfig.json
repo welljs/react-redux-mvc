@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "module": "commonjs",
+    "target": "es5",
+    "lib":["dom", "es6", "dom.iterable", "scripthost", "es2016.array.include", "es2015.promise", "es2017"],
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "removeComments": true,
+    "declarationDir": "./lib/types",
+    "declaration": true,
+    "outDir": "./lib/"
+  },
+  "include": [
+    "./src"
+  ],
+  "exclude": [
+    "./node_modules",
+    "**/*.spec.ts",
+    "**/*.spec.tsx"
+  ]
+}
