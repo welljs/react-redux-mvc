@@ -7,11 +7,13 @@ interface IModelData {
 }
 
 // Collection is class to work with Models with IModelData interface
-export class Collection<T extends IModelData> {
+export class Collection<T extends IModelData, O extends object = {}> {
   public models: Array<Model<T>> = [];
+  public options?: O;
 
-  public constructor(items: T[] = [], options: IDefaultModelOptions = {}) {
-    this._prepare(items, options);
+  public constructor(items: T[] = [], options?: O) {
+    this.options = options;
+    this._prepare(items);
     this.onInit();
     return this;
   }
@@ -168,13 +170,12 @@ export class Collection<T extends IModelData> {
   /**
    * Creates array of models
    * @param {T[]} items - Instance of Model
-   * @param {IDefaultModelOptions} options
    * @private
    */
-  private _prepare(items: T[], options?: IDefaultModelOptions): void {
+  private _prepare(items: T[]): void {
     items.forEach(item => {
       item._id = item._id || generateGuid();
-      this.models.push(new Model(item, options));
+      this.models.push(new Model(item));
     });
   }
 
