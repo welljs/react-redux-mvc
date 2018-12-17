@@ -6,6 +6,10 @@ interface IModelData {
   [name: string]: any;
 }
 
+interface Constructable<Proto> {
+  new (...args: any[]): Proto;
+}
+
 // Collection is class to work with Models with IModelData interface
 export class Collection<T extends IModelData, O extends object = {}> {
   public models: Array<Model<T>> = [];
@@ -15,14 +19,6 @@ export class Collection<T extends IModelData, O extends object = {}> {
     this.options = options;
     this._prepare(items);
     this.onInit();
-    return this;
-  }
-
-  /**
-   * This method is necessary for initializing
-   * @returns {this}
-   */
-  public onInit(): this {
     return this;
   }
 
@@ -168,6 +164,23 @@ export class Collection<T extends IModelData, O extends object = {}> {
   }
 
   /**
+   * This method is necessary for initializing
+   * @returns {this}
+   */
+  protected onInit(): this {
+    return this;
+  }
+
+  /**
+   * This method is recommended for overriding model instantiating
+   * @param ModelProto
+   * @param data
+   */
+  protected createModel(ModelProto: Constructable<Model<T>>, data: T): Model<T> {
+    return new ModelProto(data);
+  }
+
+  /**
    * Creates array of models
    * @param {T[]} items - Instance of Model
    * @private
@@ -175,7 +188,8 @@ export class Collection<T extends IModelData, O extends object = {}> {
   private _prepare(items: T[]): void {
     items.forEach(item => {
       item._id = item._id || generateGuid();
-      this.models.push(new Model(item));
+      const modelInstance = this.createModel(Model, item);
+      this.models.push(modelInstance);
     });
   }
 
