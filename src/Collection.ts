@@ -1,5 +1,6 @@
-import {Model, IDefaultModelOptions, TState} from './Model';
+import {Model} from './Model';
 import {generateGuid} from './helpers';
+import {TState} from './DataModel';
 
 // Model interface
 interface IModelData {

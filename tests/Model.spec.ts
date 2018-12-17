@@ -25,4 +25,11 @@ describe('Model', () => {
   it('should return model state', () => {
     expect(testModel.getState(testKey)).toEqual(testModelData[testKey]);
   });
+  it('should have different initial state', () => {
+    const secondModel = new Model({});
+    const testWaitingKey = 'testWaitingKey';
+    testModel.setWaiting(testWaitingKey);
+    expect(testModel.isWaiting(testWaitingKey)).toBeTruthy();
+    expect(secondModel.isWaiting(testWaitingKey)).toBeFalsy();
+  });
 });
