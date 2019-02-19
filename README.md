@@ -2,7 +2,7 @@
 Implementation of MVC pattrern based on React-Redux bunch keeping one direction data flow (flux pattern)
 
 
-![alt tag](https://github.com/welljs/react-redux-mvc/blob/master/mvc-scheme.png)
+![alt tag](https://github.com/welljs/react-redux-mvc/blob/master/mvc.jpg)
 
 index.ts (entry point of application)
 
