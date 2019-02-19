@@ -23,10 +23,8 @@ export class Controller<T extends Model<object>> {
   // actions that need to be wrapped by dispatcher
   public static actions: IActions = {};
   public static storeKey: string = '';
-  public getGlobalState: () => void;
-  public dispatch: <Action extends AnyAction>(action: Action) => TAction<Action>;
   public Model: Constructable<Model<object>>;
-  public name: string;
+  public name: string = 'BasicController';
   public readonly storeKey: string = '';
   private readonly actions: IActions = {};
 
@@ -37,6 +35,13 @@ export class Controller<T extends Model<object>> {
   }
 
   public componentWillReceiveProps(currentProps, nextProps): void {}
+
+  public getGlobalState() {}
+
+  // withController must pass here real dispatcher
+  public dispatch<Action extends AnyAction>(action: Action): TAction<Action> {
+    return action;
+  }
 
   /**
    * Use to connect to global store
@@ -152,13 +157,3 @@ export class Controller<T extends Model<object>> {
 function noModelWarning(controllerName: string): void {
   throw new Error(`There is Model provided to ${controllerName}`);
 }
-
-Controller.prototype.name = 'BasicController';
-// withController must pass here real dispatcher
-Controller.prototype.dispatch = function (action) {
-  return action;
-};
-Controller.prototype.getGlobalState = function () {
-};
-Controller.prototype.componentWillReceiveProps = function () {
-};

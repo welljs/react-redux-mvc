@@ -1,26 +1,25 @@
-import {Model, IDefaultModelOptions, TState} from './Model';
+import {Model} from './Model';
 import {generateGuid} from './helpers';
+import {TState} from './DataModel';
 
 // Model interface
 interface IModelData {
   [name: string]: any;
 }
 
+interface Constructable<Proto> {
+  new (...args: any[]): Proto;
+}
+
 // Collection is class to work with Models with IModelData interface
-export class Collection<T extends IModelData> {
+export class Collection<T extends IModelData, O extends object = {}> {
   public models: Array<Model<T>> = [];
+  public options?: O;
 
-  public constructor(items: T[] = [], options: IDefaultModelOptions = {}) {
-    this._prepare(items, options);
+  public constructor(items: T[] = [], options?: O) {
+    this.options = options;
+    this._prepare(items);
     this.onInit();
-    return this;
-  }
-
-  /**
-   * This method is necessary for initializing
-   * @returns {this}
-   */
-  public onInit(): this {
     return this;
   }
 
@@ -166,15 +165,32 @@ export class Collection<T extends IModelData> {
   }
 
   /**
+   * This method is necessary for initializing
+   * @returns {this}
+   */
+  protected onInit(): this {
+    return this;
+  }
+
+  /**
+   * This method is recommended for overriding model instantiating
+   * @param ModelProto
+   * @param data
+   */
+  protected createModel(ModelProto: Constructable<Model<T>>, data: T): Model<T> {
+    return new ModelProto(data);
+  }
+
+  /**
    * Creates array of models
    * @param {T[]} items - Instance of Model
-   * @param {IDefaultModelOptions} options
    * @private
    */
-  private _prepare(items: T[], options?: IDefaultModelOptions): void {
+  private _prepare(items: T[]): void {
     items.forEach(item => {
       item._id = item._id || generateGuid();
-      this.models.push(new Model(item, options));
+      const modelInstance = this.createModel(Model, item);
+      this.models.push(modelInstance);
     });
   }
 
